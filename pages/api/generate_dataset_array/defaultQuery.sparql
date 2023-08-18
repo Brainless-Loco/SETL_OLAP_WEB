@@ -1,0 +1,9 @@
+PREFIX  qb:     <http://purl.org/linked-data/cube#>
+PREFIX  owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX  qb4o:   <http://purl.org/qb4olap/cubes#>
+SELECT * 
+WHERE { 
+    ?s a qb:DataSet; 
+        ?p ?o.
+    ?s qb:structure ?x.
+}

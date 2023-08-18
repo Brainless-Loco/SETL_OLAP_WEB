@@ -1,0 +1,41 @@
+{
+  "name": "rdf_tree_visualizer",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@comunica/query-sparql": "^2.4.3",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@monaco-editor/react": "^4.4.5",
+    "@mui/icons-material": "^5.8.2",
+    "@mui/lab": "^5.0.0-alpha.108",
+    "@mui/material": "^5.14.5",
+    "@mui/styled-engine-sc": "^5.8.0",
+    "@mui/x-data-grid": "^5.17.26",
+    "axios": "^0.27.2",
+    "chart.js": "^4.1.1",
+    "firebase": "^9.8.2",
+    "font-awesome": "^4.7.0",
+    "millan": "^5.2.0",
+    "next": "12.1.6",
+    "react": "18.1.0",
+    "react-chartjs-2": "^5.1.0",
+    "react-dom": "18.1.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "styled-components": "^5.3.5",
+    "virtuoso-sparql-client": "^0.2.2"
+  },
+  "devDependencies": {
+    "eslint": "8.16.0",
+    "eslint-config-next": "12.1.6"
+  }
+}

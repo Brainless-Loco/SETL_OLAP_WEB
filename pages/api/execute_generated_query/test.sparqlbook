@@ -1,0 +1,1 @@
+[{"kind":2,"language":"sparql","value":"SELECT *\r\nFROM <http://localhost:8890/DAV>\r\nWHERE {\r\n    ?a ?b ?c\r\n}\r\nLIMIT 10"}]

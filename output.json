@@ -1,0 +1,128 @@
+{
+    "iri": "http://linked-statistics-bd.org/2011/data#PopByAdm5ResLivpos",
+    "schemaIri": "http://linked-statistics-bd.org/2011/mdStructure#popByAdm5ResLivpos",
+    "name": "PopByAdm5ResLivpos",
+    "prefix": "http://linked-statistics-bd.org/2011/data",
+    "cube": {
+        "sub": "http://linked-statistics-bd.org/2011/mdStructure#PopByGeoResLiving",
+        "pred": null,
+        "obj": null,
+        "dimensionList": [{
+            "sub": "http://linked-statistics-bd.org/2011/mdProperty#residenceDim",
+            "pred": "a",
+            "obj": "http://purl.org/qb4olap/cubes#dimension",
+            "hierarchyList": [{
+                "sub": "http://linked-statistics-bd.org/2011/mdStructure#residenceHierarchy",
+                "pred": "a",
+                "obj": "http://purl.org/qb4olap/cubes#Hierarchy",
+                "hierarchyStep": [{
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#residenceType",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#all"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#residence",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#residenceType"
+                }]
+            }]
+        }, {
+            "sub": "http://linked-statistics-bd.org/2011/mdProperty#admGeographyDim",
+            "pred": "a",
+            "obj": "http://purl.org/qb4olap/cubes#dimension",
+            "hierarchyList": [{
+                "sub": "http://linked-statistics-bd.org/2011/mdStructure#geoCitycorpHierarchy",
+                "pred": "a",
+                "obj": "http://purl.org/qb4olap/cubes#Hierarchy",
+                "hierarchyStep": [{
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFive",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#cityCorporation"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#cityCorporation",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#country"
+                }]
+            }, {
+                "sub": "http://linked-statistics-bd.org/2011/mdStructure#geoMunicipalityHierarchy",
+                "pred": "a",
+                "obj": "http://purl.org/qb4olap/cubes#Hierarchy",
+                "hierarchyStep": [{
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFive",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#municipality",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitThree"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#municipality"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitThree",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#country"
+                }]
+            }, {
+                "sub": "http://linked-statistics-bd.org/2011/mdStructure#geoHierarchy",
+                "pred": "a",
+                "obj": "http://purl.org/qb4olap/cubes#Hierarchy",
+                "hierarchyStep": [{
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFive",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitFour",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitThree"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitThree",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#AdmUnitTwo"
+                }, {
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#admUnitOne",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#country"
+                }]
+            }]
+        }, {
+            "sub": "http://linked-statistics-bd.org/2011/mdProperty#livingPositionDim",
+            "pred": "a",
+            "obj": "http://purl.org/qb4olap/cubes#dimension",
+            "hierarchyList": [{
+                "sub": "http://linked-statistics-bd.org/2011/mdStructure#livingPositionHierarchy",
+                "pred": "a",
+                "obj": "http://purl.org/qb4olap/cubes#Hierarchy",
+                "hierarchyStep": [{
+                    "sub": "http://linked-statistics-bd.org/2011/mdProperty#livingPosition",
+                    "pred": null,
+                    "obj": "http://linked-statistics-bd.org/2011/mdProperty#all"
+                }]
+            }]
+        }]
+    }
+}

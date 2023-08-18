@@ -1,0 +1,9 @@
+.selectedItem{
+    font-weight: bolder;
+    font-size: medium;
+    cursor: pointer;
+    color: rebeccapurple;
+}
+.selectedItem:hover{
+    color: red;
+}

@@ -57,18 +57,15 @@ const Viewport = ({tabIdx, setTabIdx,
     return (
         <Box>
             <Card>
-                <CardHeader title='Viewport'/>
+                {/* <CardHeader title='Viewport' sx={{color:'#08094f'}}/> */}
                 <CardContent style={flexSetting}>
-                    <Tabs 
-                    value={tabIdx} 
-                    onChange={handleTabChange}>
+                    <Tabs value={tabIdx} onChange={handleTabChange}>
                         <Tab label='File List' value={0}/>
-                        <Tab label='Dataset'/>
-                        <Box flexGrow={1}/>
-                        <Tab label='Sparql Editor' sx={{alignSelf: 'right'}}/>
+                        {/* <Tab label='Dataset'/> */}
+                        {/* <Tab label='Sparql Editor' sx={{alignSelf: 'right'}}/> */}
                         <Tab label='Query Results' sx={{alignSelf: 'right'}}/>
                     </Tabs>
-                    <Box sx={{height: '512px', overflowY: 'auto'}}>
+                    <Box sx={{ height: 'auto', overflowY: 'auto'}}>
                         <FileListTab value={tabIdx} index={0}
                             onExtractDataset={onExtractDataset} 
                             setTBoxFileRef={setTBoxFileRef} 
@@ -96,7 +93,13 @@ const Viewport = ({tabIdx, setTabIdx,
                             shallExecute={execute}
                             queryID={queryID}/>
                     </Box>
-                    
+                    <DatasetTab
+                            onSelectDataset={onSelectDataset}
+                            aboxIRI={aboxIRI}
+                            datasetArray={datasetArray}
+                            onLevelPropSelect={onLevelPropSelect}
+                            onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
+                            addAggFunc={addAggFunc}/>
                     
                 </CardContent>
             </Card>

@@ -152,11 +152,9 @@ const Home = () => {
 
             {/* App mediator class */}
 
-            <Grid container
-            rowSpacing={{xs: 1, sm: 2, md: 2, lg: 3}}
-            columnSpacing={1} columns={10}
-            sx={{ p: '8px', height: 'auto', overflowY: 'auto', overflowX: 'hidden' }}>
-                <Grid item xs={10} sm={10} md={7} lg={7} xl={7}>
+            <Grid container rowSpacing={{xs: 1, sm: 2, md: 2}} columnSpacing={1} columns={12}
+            sx={{ paddingTop: '8px', height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'center' }}>
+                <Grid item md={4}>
                     <Viewport tabIdx={tabIdx} 
                         queryID={queryID}
                         queryData={queryData}
@@ -177,7 +175,7 @@ const Home = () => {
                         />
                 </Grid>
 
-                <Grid item xs={5} sm={5} md={3} lg={3} xl={3}>
+                <Grid item md={4}>
                     <SelectionDockingWindow 
                     onQueryUpload={setQueryID}
                     onQueryGeneration={setQueryData}

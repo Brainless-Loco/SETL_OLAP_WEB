@@ -1,6 +1,6 @@
-import { ThemeProvider, useTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
 import LightTheme from '../../theme/LightTheme'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import MyAppbar from '../Appbar/MyAppbar'
 import MainContentWrapper from './MainContentWrapper'
 

@@ -141,16 +141,16 @@ const DatasetTab = ({value, index, datasetArray,
     return (
         <Box hidden={value != index} sx={{width: '100%'}}>
             <Box hidden={!loading}>
-                <Typography> 
+                <Typography sx={{color:'#08094f',fontSize:'14px',fontWeight:'bold',textAlign:'center'}}> 
                     Select a TBox File and an ABox file to extract dataset(s).
                 </Typography>
             </Box>
-            <Box hidden={loading} sx={{ height: '100%',marginTop:'12px' }}>
+            <Box hidden={loading} sx={{ height: '100%',marginTop:'15px' }}>
                 <FormControl fullWidth>
-                    <InputLabel id='dataset-label'>Dataset</InputLabel>
+                    <InputLabel id='dataset-label' sx={{fontSize:'90%',verticalAlign:'middle',top:'-10%'}}>Datasets</InputLabel>
                     <Select
                     labelId="dataset-select"
-                    sx={{width:'100%'}}
+                    sx={{width:'100%',height:'40px'}}
                     label='Dataset'
                     value={selectedDataset}
                     onChange={handleDatasetChange}>

@@ -55,29 +55,21 @@ const Viewport = ({tabIdx, setTabIdx,
     }
 
     return (
-        <Box>
-            <Card>
+        <Box >
+            <Card >
                 {/* <CardHeader title='Viewport' sx={{color:'#08094f'}}/> */}
                 <CardContent style={flexSetting}>
                     <Tabs value={tabIdx} onChange={handleTabChange}>
-                        <Tab label='File List' value={0}/>
+                        <Tab  label='File List' value={0}/>
                         {/* <Tab label='Dataset'/> */}
                         {/* <Tab label='Sparql Editor' sx={{alignSelf: 'right'}}/> */}
                         <Tab label='Query Results' sx={{alignSelf: 'right'}}/>
                     </Tabs>
-                    <Box sx={{ height: 'auto', overflowY: 'auto'}}>
+                    <Box sx={{ height: 'auto', overflowY: 'auto',maxWidth:'100%'}}>
                         <FileListTab value={tabIdx} index={0}
                             onExtractDataset={onExtractDataset} 
                             setTBoxFileRef={setTBoxFileRef} 
                             setABoxFileRef={setABoxFileRef}/>
-
-                        <DatasetTab value={tabIdx} index={1}
-                            onSelectDataset={onSelectDataset}
-                            aboxIRI={aboxIRI}
-                            datasetArray={datasetArray}
-                            onLevelPropSelect={onLevelPropSelect}
-                            onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
-                            addAggFunc={addAggFunc}/>
                         
                         <QueryViewTab 
                             value={tabIdx} 

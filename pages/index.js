@@ -152,8 +152,8 @@ const Home = () => {
 
             {/* App mediator class */}
 
-            <Grid container rowSpacing={{xs: 1, sm: 2, md: 2}} columnSpacing={1} columns={12}
-            sx={{ paddingTop: '8px', height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'center' }}>
+            <Grid container rowSpacing={{xs: 2}} columnSpacing={0.5} columns={12}
+            sx={{ paddingTop: '8px', paddingX:'8px',height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'space-around' }}>
                 <Grid item md={4}>
                     <Viewport tabIdx={tabIdx} 
                         queryID={queryID}
@@ -173,6 +173,16 @@ const Home = () => {
                         addLevels={handleSelectedLevels}
                         onLevelPropSelect={handleLevelPropSelect}
                         />
+                </Grid>
+                <Grid item md={4}>
+                    <SelectionDockingWindow 
+                    onQueryUpload={setQueryID}
+                    onQueryGeneration={setQueryData}
+                    dataset={selectedDataset}
+                    measures={selectedMeasures} 
+                    removeSelectedAggFunc={removeSelectedAggFunc} 
+                    levels={levelPropData}
+                    aboxRef={aboxFileRef}/>
                 </Grid>
 
                 <Grid item md={4}>

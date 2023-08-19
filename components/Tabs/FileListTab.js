@@ -41,12 +41,12 @@ const FileListTab = ({value, index, onExtractDataset}) => {
     }, [graphs])
 
     return (
-        <Box hidden={value != index} sx={{width: '100%'}}>
-            <FormControl fullWidth sx={{ marginY: '16px' }}>
-                <InputLabel id='filter-cond-label'>TBox IRI</InputLabel>
+        <Box hidden={value != index} sx={{width: 'auto',display:'flex',justifyContent:'center',flexDirection:'column',flexWrap:'wrap',}}>
+            <FormControl fullWidth sx={{ marginY: '10px'}}>
+                <InputLabel id='filter-cond-label' sx={{fontSize:'12px'}}>TBox IRI</InputLabel>
                 <Select
                     labelId="filter-cond-select"
-                    sx={{ width: '100%' }}
+                    sx={{ height:'40px',}}
                     label='TBox IRI'
                     value={tbox}
                     onChange={handleTBoxChange}
@@ -57,11 +57,11 @@ const FileListTab = ({value, index, onExtractDataset}) => {
                 </Select>
             </FormControl>
 
-            <FormControl fullWidth sx={{ marginY: '16px' }}>
-                <InputLabel id='filter-cond-label'>ABox IRI</InputLabel>
+            <FormControl fullWidth sx={{ marginBottom: '10px' }}>
+                <InputLabel id='filter-cond-label' sx={{fontSize:'12px'}}>ABox IRI</InputLabel>
                 <Select
                     labelId="filter-cond-select"
-                    sx={{ width: '100%' }}
+                    sx={{height:'40px' }}
                     label='ABox IRI'
                     value={abox}
                     onChange={handleABoxChange}
@@ -72,12 +72,8 @@ const FileListTab = ({value, index, onExtractDataset}) => {
                 </Select>
             </FormControl>
             
-            <Button
-            fullWidth
-            variant='contained'
-            onClick={() => onExtractDataset(abox, tbox)}
-            type="button" 
-            disabled={!tbox.length || !abox.length}>
+            <Button fullWidth variant='contained' onClick={() => onExtractDataset(abox, tbox)} type="button" 
+            disabled={!tbox.length || !abox.length} sx={{backgroundColor:'#08094f',height:'30px'}} >
                 Extract Dataset
             </Button>
         </Box>

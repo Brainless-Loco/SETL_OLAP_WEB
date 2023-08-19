@@ -18,25 +18,21 @@ const MeasureListItem = ({data, onMeasureAggrFuncSelect,addAggFunc}) => {
     }
 
     return (
-        <ListItem sx={{padding:'0px'}}>
-            <List>
-                <ListItem disableGutters sx={{padding:'0px',marginTop:'0px',height:'30px'}}>
-                    <ListItemButton 
-                        onClick={
-                            () => {
-                                setIsOpen(!isOpen)
-                            }
-                        }>
-                        <ListItemIcon sx={{alignItems: 'center', justifyContent: 'center'}}>
+        <ListItem sx={{paddingX:'0px'}}>
+            <List sx={{width:'95%',marginLeft:'0px',paddingY:'0px',marginY:'0px',}}>
+                <ListItem disableGutters sx={{marginTop:'0px',height:'30px',width:'auto',}}>
+                    <ListItemButton  sx={{paddingX:'10px',height:'30px'}}
+                        onClick={ () => { setIsOpen(!isOpen) } }>
+                        {/* <ListItemIcon sx={{alignItems: 'center', justifyContent: 'center'}}>
                             <Folder/>
-                        </ListItemIcon>
+                        </ListItemIcon> */}
 
                         <ListItemText primary={`mdProperty:${data.name}`}/>
                         {!isOpen ? (<ExpandLess/>) : (<ExpandMore/>)}
                     </ListItemButton>
                 </ListItem>
-                <ListItem sx={{height:'20px',marginLeft:'40px'}}>
-                    <ListItemText primary={`Range: ${data.range.split('#')[1]}`}/>
+                <ListItem sx={{height:'auto',marginLeft:'20px',paddingY:'0px',marginY:'0px'}}>
+                    <ListItemText sx={{color:'#08094f'}} primary={`Range: ${data.range.split('#')[1]}`}/>
                 </ListItem>
                 <ListItem>
                     <AggregateFunctionList parent={data} isOpen={isOpen} addAggFunc={addAggFunc} onAggrFuncSelect={onAggrFuncSelect}/>

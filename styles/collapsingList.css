@@ -1,0 +1,42 @@
+.listItem_01{
+    /* height: 20px; */
+}
+.listItem_01::before{
+    position: absolute;
+    content: '';
+    width: 8%;
+    height: 1px;
+    margin-left: -6%;
+    background-color: black;
+}
+/* .listItem_01::after{
+    position: absolute;
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-left: -7%;
+    background-color: #08094f;
+} */
+.listItem_02{
+    padding-left: 15px;
+}
+.listItem_02::before{
+    position: absolute;
+    content: '';
+    width: 4.5%;
+    height: 1px;
+    margin-left: -5%;
+    background-color: #08094f;
+}
+.listItem_03{
+    /* padding-left: 15px; */
+}
+.listItem_03::before{
+    position: absolute;
+    content: '';
+    width: 15%;
+    height: 1px;
+    margin-left: -10%;
+    background-color: #08094f;
+}

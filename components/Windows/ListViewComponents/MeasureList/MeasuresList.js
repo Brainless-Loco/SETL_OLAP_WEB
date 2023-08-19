@@ -18,26 +18,22 @@ const MeasuresList = ({list, onMeasureAggrFuncSelect,addAggFunc}) => {
             width: 'auto',
             margin:'0px',
             padding:'0px',
-            overflow:'auto'
+            overflow:'auto',
+            marginTop:'10px',
         }}>
-            <ListItem disableGutters sx={{height:'10px'}}>
-                <ListItemButton 
-                    onClick={
-                        () => {
-                            setIsOpen(!isOpen)
-                        }
-                    }>
-                    <ListItemIcon sx={{alignItems: 'center', justifyContent: 'center',alignItems:'center'}}>
+            <ListItem disableGutters sx={{height:'auto',paddingY:'5px',}}>
+                <ListItemButton sx={{marginY:'0px',paddingX:'5px',height:'25px'}} onClick={ () => {setIsOpen(!isOpen) } }>
+                    {/* <ListItemIcon sx={{alignItems: 'center', justifyContent: 'center',alignItems:'center'}}>
                         <Folder/>
-                    </ListItemIcon>
+                    </ListItemIcon> */}
 
                     <ListItemText primary={"Measures"}/>
                     {!isOpen ? (<ExpandLess/>) : (<ExpandMore/>)}
                 </ListItemButton>
             </ListItem>
-            <ListItem sx={{height:'80%'}}>
-                <Collapse in={isOpen} timeout='auto' unmountOnExit sx={{width: '90%'}}>
-                    <List>
+            <ListItem sx={{height:'80%',width:'100%',paddingY:'0px',}}>
+                <Collapse in={isOpen} timeout='auto' unmountOnExit sx={{width: '100%'}}>
+                    <List sx={{paddingY:'0px',marginY:'0px',}}>
                         {list.map((item, idx) => (
                             <MeasureListItem key={`measure_${item.name}`} isParentOpen={isOpen} data={item} addAggFunc={addAggFunc} onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}/>
                         ))}

@@ -11,17 +11,17 @@ const CollapsingList = ({listItems, isOpen, onItemClick, mdProperty}) => {
 
 
     return (
-        <Collapse in={isOpen} timeout='auto' unmountOnExit sx={{width: '90%',borderLeft:'1px solid black'}}>
-            <List sx={{width:'100%',marginLeft:'5%',padding:'0px'}}>
+        <Collapse in={isOpen} timeout='auto' unmountOnExit sx={{width: '100%',marginLeft:'5px',paddingX:'0px',borderLeft:'1px solid #08094f'}}>
+            <List sx={{width:'100%',padding:'0px'}}>
                 {listItems.map((obj, idx) => {
                     if(obj.hierarchyList) return (<FileNameList key={`mdProp_${obj.name}_${idx}`} listName={`mdproperty:${obj.name}`} list={obj.hierarchyList} onItemClick={onItemClick}/>)
                     if(obj.hierarchyStep) return (<FileNameList key={`mdStruct_${obj.name}_${idx}`} listName={`mdStructure:${obj.name}`} list={obj.hierarchyStep} onItemClick = {onItemClick}></FileNameList>)
                     return(
-                        <ListItem sx={{height:'25px',marginBottom:'5px'}} key={`${obj.name}_${idx}`} title={obj.name}>
-                            <ListItemButton sx={{height:'30px'}} onClick={() => {onItemClick(obj)}}>
-                                <ListItemIcon sx={{alignItems: 'center', justifyContent: 'space-around'}}>
+                        <ListItem sx={{height:'25px',marginBottom:'1px'}} key={`${obj.name}_${idx}`} title={obj.name}>
+                            <ListItemButton className='listItem_01' sx={{height:'25px'}} onClick={() => {onItemClick(obj)}}>
+                                {/* <ListItemIcon sx={{alignItems: 'center', justifyContent: 'space-around'}}>
                                     <InsertDriveFileIcon/>
-                                </ListItemIcon>
+                                </ListItemIcon> */}
                                 <ListItemText 
                                     primary={`${mdProperty ? 'mdProperty:' : ''}${obj.name}`} 
                                     primaryTypographyProps={{ 

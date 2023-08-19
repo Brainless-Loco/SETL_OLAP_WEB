@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import '../styles/treeView.css'
 import '../styles/selectionSummary.css'
+import '../styles/collapsingList.css'
 import Layout from "../components/Layout/Layout"
 import firebaseApp from '../firebase/firebaseApp'
 

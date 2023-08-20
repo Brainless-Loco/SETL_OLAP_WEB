@@ -23,7 +23,7 @@ const AggregateFunctionList = ({parent, isOpen, onAggrFuncSelect,addAggFunc}) =>
                 {functions.map((obj, idx) => {
                     return(
                         <ListItem className='listItem_03' sx={{height:'30px'}} key={`${parent.name}_${obj.name}_${idx}`} title={obj.name}>
-                            <ListItemButton sx={{height:'30px',width:'100%',paddingX:'30px'}} onClick={()=>{onAggrFuncSelect(obj)}}>
+                            <ListItemButton sx={{height:'30px',width:'100%',paddingX:'30px',fontWeight:'bold'}} onClick={()=>{onAggrFuncSelect(obj)}}>
                                 {/* <ListItemIcon sx={{alignItems: 'center', justifyContent: 'space-around'}}>
                                     <InsertDriveFileIcon/>
                                 </ListItemIcon> */}

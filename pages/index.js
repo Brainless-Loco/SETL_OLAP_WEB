@@ -13,6 +13,7 @@ import Box from "@mui/material/Box"
 // import ProjectDockingWindow from "../components/Windows/ProjectDockingWindow/ProjectDockingWindow"
 // import TreeViewport from "../components/Windows/Viewport/TreeViewport"
 import SelectionDockingWindow from "../components/Windows/SelectionDockingWindow/SelectionDockingWindow"
+import LevelViewport from "../components/Windows/Viewport/LevelViewport"
 
 const Home = () => {
     const [tabIdx, setTabIdx] = useState(0)
@@ -143,6 +144,10 @@ const Home = () => {
         console.log("Index >", levelPropData)
     }, [levelPropData])
 
+
+    
+    const [dialogData, setDialogData] = useState({name: 'demo level'})
+
     return (
         <Box disableGutters sx={{height: '100%'}}>
             <Head>
@@ -153,47 +158,33 @@ const Home = () => {
             {/* App mediator class */}
 
             <Grid container rowSpacing={{xs: 2}} columnSpacing={0.5} columns={12}
-            sx={{ paddingTop: '8px', paddingX:'8px',height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'space-around' }}>
+            sx={{ paddingTop: '15px', paddingX:'8px',height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'space-around' }}>
                 <Grid item md={4}>
                     <Viewport tabIdx={tabIdx} 
-                        queryID={queryID}
-                        queryData={queryData}
+                        queryID={queryID} queryData={queryData}
                         onSelectDataset={dataset => setSelectedDataset(dataset)}
-                        onExtract={extractDatasetArray} 
-                        setTabIdx={setTabIdx} 
-                        fileRef={fileRef} 
-                        datasetArray={datasetArray}
+                        onExtract={extractDatasetArray}  setTabIdx={setTabIdx} 
+                        fileRef={fileRef}  datasetArray={datasetArray}
                         prefixMap={prefixes} 
                         onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
-                        setTBoxFileRef={setTBoxFileRef} 
-                        setABoxFileRef={setABoxFileRef}
-                        tboxRef={tboxFileRef} 
-                        aboxRef={aboxFileRef}
+                        setTBoxFileRef={setTBoxFileRef} setABoxFileRef={setABoxFileRef}
+                        tboxRef={tboxFileRef} aboxRef={aboxFileRef}
                         addAggFunc={handleSetSelectedAggFunc}
                         addLevels={handleSelectedLevels}
                         onLevelPropSelect={handleLevelPropSelect}
                         />
                 </Grid>
                 <Grid item md={4}>
-                    <SelectionDockingWindow 
-                    onQueryUpload={setQueryID}
-                    onQueryGeneration={setQueryData}
-                    dataset={selectedDataset}
-                    measures={selectedMeasures} 
-                    removeSelectedAggFunc={removeSelectedAggFunc} 
-                    levels={levelPropData}
-                    aboxRef={aboxFileRef}/>
+                    <LevelViewport data={dialogData} />
                 </Grid>
 
                 <Grid item md={4}>
                     <SelectionDockingWindow 
                     onQueryUpload={setQueryID}
                     onQueryGeneration={setQueryData}
-                    dataset={selectedDataset}
-                    measures={selectedMeasures} 
+                    dataset={selectedDataset} measures={selectedMeasures} 
                     removeSelectedAggFunc={removeSelectedAggFunc} 
-                    levels={levelPropData}
-                    aboxRef={aboxFileRef}/>
+                    levels={levelPropData} aboxRef={aboxFileRef}/>
                 </Grid>
                 
             </Grid>

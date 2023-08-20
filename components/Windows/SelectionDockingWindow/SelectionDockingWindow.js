@@ -52,18 +52,18 @@ const SelectionDockingWindow = ({measures, levels, aboxRef, dataset, onQueryUplo
 
     useEffect(() => {
         // Do nothing
-        console.log("Selection DW measures >", measures)
-        console.log("Selection DW levels >", levels)     
+        // console.log("Selection DW measures >", measures)
+        // console.log("Selection DW levels >", levels)     
         setLoading(!validateData())   
     }, [measures, levels])
 
     return (
         <Card sx={{
             height: '100%',
-            width: '100%'
+            width: '100%',
         }}>
             {/* Bad practice, use card header instead */}
-            <CardHeader title='Selection Summary'/>
+            <CardHeader sx={{color:'#08094f',paddingBottom:'0px'}} title='Selection Summary'/>
             
             {/* Seperate the components. */}
             <CardContent>

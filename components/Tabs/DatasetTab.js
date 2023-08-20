@@ -29,7 +29,7 @@ const DatasetTab = ({value, index, datasetArray,
     const [measures, setMeasures] = useState([])
     const [dims, setDims] = useState([])
     const [selectedDataset, setSelectedDataset] = useState('')
-    const [open, setOpen] = useState(false) // State for dialog(Modal)
+    const [open, setOpen] = useState(true) // State for dialog(Modal)
     const [dialogData, setDialogData] = useState({name: 'demo level'})
     
     

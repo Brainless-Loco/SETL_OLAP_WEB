@@ -30,7 +30,7 @@ const CollapsingList = ({listItems, isOpen, onItemClick, mdProperty}) => {
                                         whiteSpace: 'nowrap',
                                         overflowX: 'hidden',
                                         textOverflow: 'ellipsis',
-                                        paddingLeft:'10px'
+                                        paddingLeft:'10px',
                                     }
                                 }}/>
                             </ListItemButton>

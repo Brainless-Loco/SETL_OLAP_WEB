@@ -10,7 +10,7 @@ import { useState } from "react"
 import CollapsingList from "./CollapsingList"
 
 const FileNameList = ({listName, list, onItemClick, mdProperty}) => {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <List  sx={{
@@ -29,7 +29,7 @@ const FileNameList = ({listName, list, onItemClick, mdProperty}) => {
                         }
                     }>
 
-                    <ListItemText sx={{width:'100%'}} primary={listName}/>
+                    <ListItemText sx={{width:'100%',fontWeight:'bold'}} primary={listName}/>
                     {!isOpen ? (<ExpandLess/>) : (<ExpandMore/>)}
                 </ListItemButton>
             </ListItem>

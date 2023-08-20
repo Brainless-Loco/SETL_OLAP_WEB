@@ -27,12 +27,12 @@ const MeasureListItem = ({data, onMeasureAggrFuncSelect,addAggFunc}) => {
                             <Folder/>
                         </ListItemIcon> */}
 
-                        <ListItemText primary={`mdProperty:${data.name}`}/>
+                        <ListItemText primary={`mdProperty:${data.name}`} sx={{fontWeight:'bold'}}/>
                         {!isOpen ? (<ExpandLess/>) : (<ExpandMore/>)}
                     </ListItemButton>
                 </ListItem>
                 <ListItem sx={{height:'auto',marginLeft:'20px',paddingY:'0px',marginY:'0px'}}>
-                    <ListItemText sx={{color:'#08094f'}} primary={`Range: ${data.range.split('#')[1]}`}/>
+                    <ListItemText sx={{color:'#08094f',fontWeight:'bold'}} primary={`Range: ${data.range.split('#')[1]}`}/>
                 </ListItem>
                 <ListItem>
                     <AggregateFunctionList parent={data} isOpen={isOpen} addAggFunc={addAggFunc} onAggrFuncSelect={onAggrFuncSelect}/>

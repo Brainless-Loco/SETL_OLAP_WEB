@@ -13,40 +13,50 @@ import ALevelRow from './LevelSelectionItem/ALevelRow'
 import MeasureSelectionSummaryFragment from './MeasureSelectionItem/MeasuresSelectionSummaryFragment'
 import LevelSelectionSummaryFragment from './LevelSelectionItem/LevelSelectionSummaryFragment'
 
-// Firestore
-import { doc, setDoc, deleteDoc, collection, getDocs, getFirestore, addDoc } from 'firebase/firestore'
+import main from '../../SparqlQueryGeneration/SparqlQueryGeneration'
 
-const SelectionDockingWindow = ({measures, levels, aboxRef, dataset, onQueryUpload, onQueryGeneration, selectedLevels,changeSelectedLevels,removeSelectedAggFunc}) => {
+const SelectionDockingWindow = ({measures, levels, aboxRef, dataset, setsparqlQueryData, setQueryView, setqueryResultView, onQueryUpload, onQueryGeneration, selectedLevels,changeSelectedLevels,removeSelectedAggFunc}) => {
     const validateData = () => {
         return measures.length && levels.length;
     }
 
     const [loading, setLoading] = useState(!validateData())
 
-    
-    
-    const handleUpload = async () => {
+    const getQueryResult = async()=>{
         setLoading(true)
-        const db = getFirestore()
+        const newSparqlQuery = await main({measures, levels, dataset})
+        setsparqlQueryData(newSparqlQuery)
+        setqueryResultView(true)
+        setLoading(false)
+    }
 
+
+    const getQuery = async () => {
+        setLoading(true)
+
+        // const db = getFirestore()
         // Collection > Documents : Upload data
-        if(validateData()) {
-            const docID = await addDoc(collection(db, 'query_data'), {measures, levels, dataset})
+        // if(validateData()) {
+        //     const docID = await addDoc(collection(db, 'query_data'), {measures, levels, dataset})
 
-            const req = await fetch(`/api/generate_query?docID=${docID.id}`)
-            const data = await req.json()
+        //     const req = await fetch(`/api/generate_query?docID=${docID.id}`)
+        //     const data = await req.json()
 
-            // TODO: Show the query and run the query on click
-            const queryID = await addDoc(collection(db, 'queries'), data)
-            onQueryUpload(queryID.id)
-            onQueryGeneration(data)
+        //     // TODO: Show the query and run the query on click
+        //     const queryID = await addDoc(collection(db, 'queries'), data)
+        //     onQueryUpload(queryID.id)
+        //     onQueryGeneration(data)
             
-            console.log("Deleting temporary doc >", docID.id)
-            deleteDoc(doc(db, 'query_data', docID.id))
-        } else {
-            console.log("Cannot upload empty data!")
-        }
+        //     console.log("Deleting temporary doc >", docID.id)
+        //     deleteDoc(doc(db, 'query_data', docID.id))
+        // } else {
+        //     console.log("Cannot upload empty data!")
+        // }
 
+        const newSparqlQuery = await main({measures, levels, dataset})
+        setsparqlQueryData(newSparqlQuery)
+        // console.log(newsp)
+        setQueryView(true)
         setLoading(false)
     }
 
@@ -75,17 +85,11 @@ const SelectionDockingWindow = ({measures, levels, aboxRef, dataset, onQueryUplo
             </CardContent>
 
             <CardActions sx={{justifyContent: 'space-between'}}>
-                <Button 
-                variant='contained' 
-                onClick={handleUpload} 
-                disabled={loading}>
-                    Get Query Result
-                </Button>
-                <Button  
-                onClick={() => console.log("Selection Docking Window >", aboxRef.name)}
-                variant='contained'
-                disabled={loading}>
+                <Button onClick={getQuery} variant='contained' disabled={loading}>
                     Get SPARQL Query
+                </Button>
+                <Button  variant='contained' onClick={getQueryResult}  disabled={loading}>
+                    Get Query Result
                 </Button>
             </CardActions>
             

@@ -2,14 +2,14 @@ import { doc, getDoc, collection, getDocs, getFirestore, addDoc, deleteDoc } fro
 import SparqlClient from '../sparql_client/SparqlClient'
 
 const handler = async (req, res) => {
-    const {queryID, aboxIRI} = req.query
-    const db = getFirestore()
-    const docSnap = await getDoc(doc(db, 'queries', queryID))
+    const {sparql, aboxIRI} = req.query
+    // const db = getFirestore()
+    // const docSnap = await getDoc(doc(db, 'queries', queryID))
 
-    if(docSnap.exists()) {
-        // Code
-        const data = docSnap.data()
-        const {sparql} = data
+    // if(docSnap.exists()) {
+        // // Code
+        // const data = docSnap.data()
+        // const {sparql} = data
         const q = sparql.replace('__FROM_TOKEN_GRAPH_IRI__', aboxIRI)
 
         
@@ -22,7 +22,7 @@ const handler = async (req, res) => {
         //console.log('Deleting query from the database >', queryID)
         //deleteDoc(doc(db, 'queries', queryID))
         res.status(200).json(result.data)
-    } else res.status(404).send("Error! No such query exists on the database!")
+    // } else res.status(404).send("Error! No such query exists on the database!")
 }
 
 export default handler

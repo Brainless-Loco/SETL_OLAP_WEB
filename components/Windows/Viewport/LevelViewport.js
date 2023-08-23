@@ -1,4 +1,4 @@
-import { Box, Typography} from '@mui/material'
+import { Box, CircularProgress, Typography} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -14,6 +14,8 @@ import { DataGrid } from '@mui/x-data-grid';
 
 export default function LevelViewport({ data, aboxIRI, onDone}) {
 
+    // console.log(aboxIRI)
+
   const [selectedLevelProp, setSelectedLevelProp] = useState('')
   const [selectedFilterCondition, setSelectedFilterCondition] = useState('Equal to (=)')
   const [activeStep, setActiveStep] = useState(0)
@@ -23,12 +25,14 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
   const [toBeViewedProperty, setToBeViewedProperty] = useState('')
   const [levelAttributes, setlevelAttributes] = useState([])
 
+//   console.log(data)
+
 
   const cols = [
         { field: 'id', headerName: 'No.', width: 64 },
-        { field: 'name', headerName: 'Instance Name', width: 128 },
+        // { field: 'name', headerName: 'Instance Name', width: 128 },
         { field: 'sub', headerName: 'Instance IRI', width: 256 },
-        { field: 'obj', headerName: 'Instance of', width: 128 },
+        { field: 'obj', headerName: 'Instance of', width: 256 },
     ]
 
     const filterConditions = ['Equal to (=)', 'Not Equal to (!=)',
@@ -36,8 +40,8 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
         'Less Than (<)', 'Less or Equal (<=)'
     ]
 
-  const handlePropChange = (event) => {
-    setSelectedLevelProp(event.target.value)
+    const handlePropChange = (event) => {
+        setSelectedLevelProp(event.target.value)
     }
 
     const handleFilterCondChange = (event) => {
@@ -48,14 +52,6 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
         setToBeViewedProperty(event.target.value)
     }
 
-    const handleNext = () => {
-        setActiveStep((activeStep + 1) % 2) // Maybe you need t work on this
-    }
-
-    const handleBack = () => {
-        setActiveStep(Math.max(0, activeStep - 1)) // No further work required
-    }
-
     const findCurrentLevelPropObj = () => {
         for (let i = 0; i < levelAttributes.length; i++) {
             if (levelAttributes[i].name === selectedLevelProp) return levelAttributes[i];
@@ -64,32 +60,33 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
     }
 
     const fetchInstances = async () => {
-    console.log("Request > Level Instance > Trying to fetch level instances");
-    setLoading(true)
+        // console.log("Request > Level Instance > Trying to fetch level instances");
+        setLoading(true)
 
-    // Code
-    const lvlProp = findCurrentLevelPropObj()
-    const params = new URLSearchParams()
-    params.append('aboxIRI', aboxIRI)
-    params.append('level', prefix + '#' + name)
-    params.append('levelProp', lvlProp.prefix + '#' + lvlProp.name)
+        // Code
+        const lvlProp = findCurrentLevelPropObj()
+        const params = new URLSearchParams()
+        params.append('aboxIRI', aboxIRI)
+        params.append('level', data.prefix + '#' + data.name)
+        params.append('levelProp', lvlProp.prefix + '#' + lvlProp.name)
 
 
-    const req = await fetch(`/api/generate_level_instances?${params.toString()}`)
-    if (!req.ok) {
-        console.log("Internal server error")
+        const req = await fetch(`/api/generate_level_instances?${params.toString()}`)
+        if (!req.ok) {
+            console.log("Internal server error")
+            setLoading(false)
+            return
+        }
+        const res = await req.json()
+        const temp = []
+        res.forEach((item, idx) => {
+            temp.push({ ...item, id: idx })
+        })
+        setLevelInstances(temp)
+        // console.log(temp)
+        ///console.log("API > generate_level_instances: ", res)
         setLoading(false)
-        return
-    }
-    const res = await req.json()
-    const temp = []
-    res.forEach((item, idx) => {
-        temp.push({ ...item, id: idx })
-    })
-    setLevelInstances(temp)
-    ///console.log("API > generate_level_instances: ", res)
-    setLoading(false)
-    console.log('Level Instances > Done said good bye')
+        // console.log('Level Instances > Done said good bye')
     }
 
     const changeSelectedInstances = (ids) => {
@@ -104,7 +101,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
     const toSymbol = (filterCond) => {
         var regex = /\(([^)]+)\)/
         const arr = regex.exec(filterCond)
-        console.log(arr)
+        // console.log(arr)
         return arr[1]
     }
 
@@ -118,18 +115,29 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             selectedInstances
         }
 
-        console.log("Level Modal > Done >", dataPack)
+        // console.log("Level Modal > Done >", dataPack)
+        // console.log(dataPack)
         onDone(dataPack)
-        onClose()
+        // onClose()
     }
 
 
 
     useEffect(() => {
         if(data.name!='demo level'){
-            setlevelAttributes(data.level)
+            // console.log(data.levelAttributes)
+            setlevelAttributes(data.levelAttributes)
+            
         }
     }, [data.name])
+
+
+    useEffect(() => {
+        if(selectedLevelProp.length>0 && toBeViewedProperty.length>0){
+            fetchInstances()
+        }
+    }, [selectedLevelProp,toBeViewedProperty])
+    
     
 
 
@@ -153,8 +161,8 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                         labelId="level-prop-select"
                         sx={{width:'100%',height:'40px'}}
                         label='Level Property'
-                        // value={selectedLevelProp}
-                        // onChange={handlePropChange}
+                        value={selectedLevelProp}
+                        onChange={handlePropChange}
                         defaultValue={"Select a property"}>
                         {levelAttributes.map((item, idx) => (
                             <MenuItem key={`level_prop_${idx}`} value={item.name}>mdAttribute:{item.name}</MenuItem>
@@ -184,7 +192,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                         labelId="level-prop-to-be-viewed"
                         sx={{ width: '100%',height:'40px' }}
                         label='Level Property to be viewed'
-                        // value={toBeViewedProperty}
+                        value={toBeViewedProperty}
                         onChange={handleToBeViewedPropertyChange}
                         defaultValue={"Select a property"}>
                         {levelAttributes.map((item, idx) => (
@@ -194,14 +202,27 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                 </FormControl>
 
                 <Box sx={{ height: '400px', width: '100%',marginTop:'10px' }}>
-                    <DataGrid
-                        checkboxSelection
-                        onSelectionModelChange={(ids)=>{changeSelectedInstances(ids)}}
-                        columns={cols}
-                        rows={levelInstances}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]} />
+                    {
+                        !loading? 
+                        <DataGrid
+                            checkboxSelection
+                            onSelectionModelChange={(ids)=>{changeSelectedInstances(ids)}}
+                            columns={cols}
+                            rows={levelInstances}
+                            pageSize={10}
+                            rowsPerPageOptions={[10]} />:
+                        <Box sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}>
+                            <CircularProgress sx={{color:"#08094f"}} size={60}/>
+                        </Box>
+                        
+                    }
+                    
+                        
                 </Box>
+                <Button onClick={handleDone}
+                    disabled={!selectedInstances.length}>
+                    Done
+                </Button>
 
               
             </CardContent>

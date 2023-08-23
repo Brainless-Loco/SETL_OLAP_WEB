@@ -14,7 +14,7 @@ const AggregateFunctionList = ({parent, isOpen, onAggrFuncSelect,addAggFunc}) =>
     const functions = [...new Map(temp.map(item =>
         [item['sub'], item])).values()];
 
-    console.log(functions)
+    // console.log(functions)
 
 
     return (

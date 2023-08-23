@@ -1,8 +1,6 @@
-import Typography  from "@mui/material/Typography"
 import { Box } from "@mui/system"
 import { DataGrid } from "@mui/x-data-grid"
 import { useEffect, useState } from "react"
-import SparqlClient from "../../pages/api/sparql_client/SparqlClient"
 import Button from '@mui/material/Button'
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -40,12 +38,11 @@ export const options = {
   },
 };
 
-const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish}) => {
-    const [sparql, setSparql] = useState('')
+const QueryResultsTab = ({ data, aboxIRI, modalOpen}) => {
     const [columns, setColumns] = useState([])
     // TODO: Fetch rows and bind them to the view.
     const [rows, setRows] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const [tabValue, setValue] = useState('1');
     const handleChange = (event, newValue) => {
@@ -81,8 +78,9 @@ const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish
         // console.log('Query Results Tab > Trying to execute query and fetch data')
 
         // Insert the graph iri here
+        setLoading(true)
         const params = new URLSearchParams()
-        params.append('queryID', queryID)
+        params.append('sparql', data.sparql)
         params.append('aboxIRI', aboxIRI)
 
         const req = await fetch(`/api/execute_generated_query?${params.toString()}`)
@@ -93,7 +91,8 @@ const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish
         // TODO: Bind data
         const cols = res.head.vars
         const bindings = res.results.bindings
-        
+        // console.log(bindings)
+
         // Process the columns
         const temp = [{field: 'id', headerName: 'ID', width: 64}]
         cols.forEach(item => {
@@ -101,6 +100,8 @@ const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish
         });
 
         setColumns(temp)
+
+        // console.log(temp)
 
         const tempRows = []
         bindings.forEach((item, idx) => {
@@ -114,6 +115,8 @@ const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish
         })
 
         setRows(tempRows)
+
+        // console.log(rows)
 
         const barChartView = ()=>{
           const labels = rows.map((item)=>{
@@ -143,30 +146,35 @@ const QueryResultsTab = ({value, index, queryID, aboxIRI, shallExecute, onFinish
           setBarGraphData(temp2)
         }
         barChartView()
+        setLoading(false)
     }
+
+    useEffect(() => {
+      const {sparql} = data
+      // if(sparql && sparql.length>0 && aboxIRI && aboxIRI.length>0) {
+        
+        fetchData()
+      // }
+    }, [data])
     
 
     return (
-        <Box hidden={value != index} sx={{height: '100%'}}>
-            <Button 
-                disabled={loading || !Boolean(queryID) || !queryID.length}
-                fullWidth
-                variant='contained'
-                onClick={onQueryExecution} 
-                sx={{marginY: '32px'}}>
-                    Execute query
-            </Button>
+        <Box sx={{height: '100%'}}>
             <TabContext  value={tabValue}>
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                     <Tab label="Tabular View" value="1" />
                     <Tab label="Graphical View" value="2" />
                 </TabList>
-                <TabPanel sx={{ height:'100%'}} value="1">
+                <TabPanel sx={{ height:'100%',minHeight:'500px'}} value="1">
+                  {
+                    !loading && 
                     <DataGrid
                         columns={columns}
                         rows={rows}
                         pageSize={10}
                         rowsPerPageOptions={[10]} />
+                  }
+                    
                 </TabPanel>
                 <TabPanel  sx={{ height:'100%'}} value="2">
                   <Bar options={options} data={barGraphData}/>;

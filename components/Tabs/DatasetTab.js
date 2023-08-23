@@ -19,7 +19,11 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const DatasetTab = ({value, index, datasetArray, 
     prefixMap, onSelectDataset, onLevelPropSelect, 
-    onMeasureAggrFuncSelect, aboxIRI, addAggFunc}) => {
+    onMeasureAggrFuncSelect, aboxIRI, addAggFunc,
+    dialogData,
+    setDialogData
+
+    }) => {
     // JSON file after running the spqrql queries
     // to generate the data set(s)
     const [data, setData] = useState(null)
@@ -29,62 +33,24 @@ const DatasetTab = ({value, index, datasetArray,
     const [measures, setMeasures] = useState([])
     const [dims, setDims] = useState([])
     const [selectedDataset, setSelectedDataset] = useState('')
-    const [open, setOpen] = useState(true) // State for dialog(Modal)
-    const [dialogData, setDialogData] = useState({name: 'demo level'})
+    const [open, setOpen] = useState(false) // State for dialog(Modal)
+    // const [dialogData, setDialogData] = useState({name: 'demo level'})
     
     
     const onDialogCancel = () => {
-        setDialogData({name: 'demo level'})
+        // setDialogData({name: 'demo level'})
         setOpen(false)
     }
 
     const onLevelSelect = (levelRef) => {
         setOpen(true)
         setDialogData(levelRef)
-        console.log("Level Select", levelRef)
+        // console.log("Level Select", levelRef)
     }
 
     const [selections,setSelections] = useState([])
     const [prefixes,setPrefixes] = useState(new Map())
 
-    const fetchFile = async () => {
-        // Code
-        if(fileType !== 'ttl') {
-            setLoading(true)
-            return
-        }
-
-        setLoading(true)
-        const req = await fetch(`/api/generate_dataset_array?fileName=${fileName}`)
-        const data = await req.json()
-        if(req.ok) {
-            setLoading(false);
-            setData(data);
-            extractListItems(data)
-        }
-        
-        const storage = getStorage()
-        const storageRef = ref(storage, `rdfsource/${fileName}`)
-        getBytes(storageRef)
-        .then(snapshot => {
-            const decoder = new TextDecoder()
-            const view = new Int8Array(snapshot)
-            const decodedText = decoder.decode(view)
-            var allLines = decodedText.split('\n')
-            prefixes.clear()
-            allLines.forEach((item)=>{
-                const temp = item.trim().split(/\s+/)
-                if(temp[0]=="@prefix"){
-                    const short = temp[1].slice(0,-1)
-                    const broad = temp[2].slice(1,-1)
-                    if(broad.slice(-1)=='>') broad=broad.slice(0,-1)
-                    prefixes.set(short,broad)
-                    prefixes.set(broad,short)
-                }
-            })
-        })
-        
-    }
 
     const extractListItems = () => {
         if(!Boolean(datasetArray)) return;
@@ -114,17 +80,6 @@ const DatasetTab = ({value, index, datasetArray,
         //setSelections([])
         extractListItems()
     }, [datasetArray])
-
-    const addOnClick = (item)=>{
-        selections.push(item)
-        selections = [...new Set(selections)]
-        setSelections(selections)
-    }
-    const removeOnClick = (item)=>{
-        selections = selections.filter(val => val !== item)
-        selections = [...new Set(selections)]
-        setSelections(selections)
-    }
 
     const findDatasetObj = (datasetName) => {
         const f = datasets.findIndex(item => item.name === datasetName)
@@ -164,7 +119,7 @@ const DatasetTab = ({value, index, datasetArray,
                     <FileNameList listName='Dimensions' list={dims} onItemClick={onLevelSelect} mdProperty/>
                     <MeasuresList list={measures} onMeasureAggrFuncSelect={onMeasureAggrFuncSelect} addAggFunc={addAggFunc}/>
                 </Box>
-                <LevelDialog open={open} handleClose={onDialogCancel} data={dialogData} aboxIRI={aboxIRI} onDone={onLevelPropSelect}/>
+                {/* <LevelDialog open={open} handleClose={onDialogCancel} data={dialogData} aboxIRI={aboxIRI} onDone={onLevelPropSelect}/> */}
             </Box>
         </Box>
     )

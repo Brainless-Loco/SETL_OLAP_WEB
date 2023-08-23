@@ -27,12 +27,21 @@ const Viewport = ({tabIdx, setTabIdx,
     setTBoxFileRef, queryID, queryData,
     setABoxFileRef, datasetArray, 
     prefixMap, onMeasureAggrFuncSelect,
-    onLevelPropSelect, addAggFunc}) => {
+    onLevelPropSelect, addAggFunc,
+    dialogData,
+    setDialogData,
+    aboxIRI,
+    setABoxIRI
+
+    }) => {
     const handleTabChange = (e, val) => {
         setTabIdx(val);
     }
 
-    const [aboxIRI, setABoxIRI] = useState('')
+    // console.log(aboxIRI)
+
+
+    // const [aboxIRI, setABoxIRI] = useState('')
     const [tboxIRI, setTBoxIRI] = useState('')
 
     const onExtractDataset = (abox, tbox) => {
@@ -54,6 +63,9 @@ const Viewport = ({tabIdx, setTabIdx,
         setExecute(true)
     }
 
+
+    // console.log(aboxIRI)
+
     return (
         <Box >
             <Card >
@@ -63,7 +75,7 @@ const Viewport = ({tabIdx, setTabIdx,
                         <Tab  label='File List' value={0}/>
                         {/* <Tab label='Dataset'/> */}
                         {/* <Tab label='Sparql Editor' sx={{alignSelf: 'right'}}/> */}
-                        <Tab label='Query Results' sx={{alignSelf: 'right'}}/>
+                        {/* <Tab label='Query Results' sx={{alignSelf: 'right'}}/> */}
                     </Tabs>
                     <Box sx={{ height: 'auto', overflowY: 'auto',maxWidth:'100%'}}>
                         <FileListTab value={tabIdx} index={0}
@@ -71,19 +83,19 @@ const Viewport = ({tabIdx, setTabIdx,
                             setTBoxFileRef={setTBoxFileRef} 
                             setABoxFileRef={setABoxFileRef}/>
                         
-                        <QueryViewTab 
+                        {/* <QueryViewTab 
                             value={tabIdx} 
                             index={3} 
                             queryData={queryData} 
-                            onQueryExecution={onQueryExecution}/>
+                            onQueryExecution={onQueryExecution}/> */}
 
-                        <QueryResultsTab 
+                        {/* <QueryResultsTab 
                             value={tabIdx} 
                             index={4} 
                             aboxIRI={aboxIRI}
                             onFinish={setExecute}
                             shallExecute={execute}
-                            queryID={queryID}/>
+                            queryID={queryID} /> */}
                     </Box>
                     <DatasetTab
                             onSelectDataset={onSelectDataset}
@@ -91,7 +103,10 @@ const Viewport = ({tabIdx, setTabIdx,
                             datasetArray={datasetArray}
                             onLevelPropSelect={onLevelPropSelect}
                             onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
-                            addAggFunc={addAggFunc}/>
+                            addAggFunc={addAggFunc}
+                            dialogData = {dialogData}
+                            setDialogData={setDialogData}
+                            />
                     
                 </CardContent>
             </Card>

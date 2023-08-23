@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 
 const MeasureSelectionSummaryFragment = ({data, onRemove}) => {
     useEffect(() => {
-        console.log("Measure selection list >", data)
+        // console.log("Measure selection list >", data)
     }, [data])
 
     return (

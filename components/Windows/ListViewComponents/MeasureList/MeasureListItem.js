@@ -13,7 +13,7 @@ const MeasureListItem = ({data, onMeasureAggrFuncSelect,addAggFunc}) => {
     const [isOpen, setIsOpen] = useState(true)
 
     const onAggrFuncSelect = (function_name) => {
-        console.log("On Aggregate function select >", {data, function_name})
+        // console.log("On Aggregate function select >", {data, function_name})
         onMeasureAggrFuncSelect(data, function_name)
     }
 

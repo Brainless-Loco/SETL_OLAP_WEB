@@ -14,6 +14,8 @@ import Box from "@mui/material/Box"
 // import TreeViewport from "../components/Windows/Viewport/TreeViewport"
 import SelectionDockingWindow from "../components/Windows/SelectionDockingWindow/SelectionDockingWindow"
 import LevelViewport from "../components/Windows/Viewport/LevelViewport"
+import QueryResultViewModal from "../components/QueryViewModal/QueryResultViewModal"
+import QueryResultView from "../components/QueryResultView/QueryResultView"
 
 const Home = () => {
     const [tabIdx, setTabIdx] = useState(0)
@@ -46,7 +48,7 @@ const Home = () => {
 
     const extractDatasetArray = async (abox, tbox) => {
 
-        console.log('Request > Extract dataset from ' + tbox);
+        // console.log('Request > Extract dataset from ' + tbox);
 
         // Query and get the datasets
         setLoading(true)
@@ -64,7 +66,7 @@ const Home = () => {
         // TODO: Extract prefixes from the dataset(s)
         
 
-        console.log('Done Fetching data');
+        // console.log('Done Fetching data');
     }
 
     const [selectedMeasures, setSelectedMeasures] = useState([])
@@ -141,12 +143,24 @@ const Home = () => {
 
     useEffect(() => {
         // Re-render on measure/level selection
-        console.log("Index >", levelPropData)
+        // console.log("Index >", levelPropData)
     }, [levelPropData])
 
-
+    
+    const [aboxIRI, setABoxIRI] = useState('')
     
     const [dialogData, setDialogData] = useState({name: 'demo level'})
+
+    const [sparqlQueryData, setsparqlQueryData] = useState(null)
+    const [QueryView, setQueryView] = useState(false)
+    const [queryResultView, setqueryResultView] = useState(false)
+
+    
+    // console.log(aboxIRI)
+
+    // console.log(sparqlQueryData)
+
+    // console.log(dialogData)
 
     return (
         <Box disableGutters sx={{height: '100%'}}>
@@ -172,22 +186,45 @@ const Home = () => {
                         addAggFunc={handleSetSelectedAggFunc}
                         addLevels={handleSelectedLevels}
                         onLevelPropSelect={handleLevelPropSelect}
+                        setDialogData={setDialogData}
+                        dialogData={dialogData}
+                        setABoxIRI={setABoxIRI}
+                        aboxIRI={aboxIRI}
                         />
                 </Grid>
                 <Grid item md={4}>
-                    <LevelViewport data={dialogData} />
+                    <LevelViewport 
+                        onDone={handleLevelPropSelect} 
+                        addLevels={handleSelectedLevels} 
+                        data={dialogData} 
+                        aboxIRI={aboxIRI}
+                    />
                 </Grid>
 
                 <Grid item md={4}>
                     <SelectionDockingWindow 
                     onQueryUpload={setQueryID}
                     onQueryGeneration={setQueryData}
-                    dataset={selectedDataset} measures={selectedMeasures} 
+                    dataset={selectedDataset} 
+                    measures={selectedMeasures} 
                     removeSelectedAggFunc={removeSelectedAggFunc} 
-                    levels={levelPropData} aboxRef={aboxFileRef}/>
+                    levels={levelPropData} 
+                    aboxRef={aboxFileRef}
+                    setsparqlQueryData={setsparqlQueryData}
+                    setQueryView={setQueryView}
+                    setqueryResultView={setqueryResultView}
+
+                    />
                 </Grid>
                 
             </Grid>
+
+        
+            <QueryResultView data={sparqlQueryData} aboxIRI={aboxIRI} modalOpen={queryResultView} setmodalOpen={setqueryResultView}/>
+
+            <QueryResultViewModal data={sparqlQueryData} modalOpen={QueryView} setmodalOpen={setQueryView}/>
+
+            
         </Box>
     )
 }

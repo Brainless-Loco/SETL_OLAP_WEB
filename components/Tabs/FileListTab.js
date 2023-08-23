@@ -27,7 +27,7 @@ const FileListTab = ({value, index, onExtractDataset}) => {
         const res = await fetch('/api/get_graph_list')
         const data = await res.json()
         const temp = []
-        console.log(data)
+        // console.log(data)
         data.forEach(item => {
             temp.push({name: item})
         })
@@ -74,7 +74,7 @@ const FileListTab = ({value, index, onExtractDataset}) => {
             
             <Button fullWidth variant='contained' onClick={() => onExtractDataset(abox, tbox)} type="button" 
             disabled={!tbox.length || !abox.length} sx={{backgroundColor:'#08094f',height:'30px'}} >
-                Extract Dataset
+                Extract Cubes
             </Button>
         </Box>
     )

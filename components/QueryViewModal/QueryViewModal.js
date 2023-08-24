@@ -14,7 +14,7 @@ export default function QuerytViewModal({data, modalOpen,setmodalOpen}) {
             </DialogContent>
 
             <DialogActions sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                <Button onClick={()=>{setmodalOpen(false)}}>
+                <Button sx={{marginLeft:'auto',fontSize:'17px',backgroundColor:''}} onClick={()=>{setmodalOpen(false)}}>
                     Close
                 </Button>
             </DialogActions>

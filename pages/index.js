@@ -1,21 +1,12 @@
 import { useEffect, useRef, useState } from "react"
-// import { getStorage, ref, uploadBytesResumable, getDownloadURL, getBytes } from "firebase/storage"
-// import axios from "axios"
-// import TreeView from "../components/HomeComponents/TreeView"
-// import MyAppbar from "../components/Appbar/MyAppbar"
 import Head from "next/head"
-// import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid"
 import Viewport from "../components/Windows/Viewport/Viewport"
 import Box from "@mui/material/Box"
-// import JsonDockingWindow from "../components/Windows/JsonDockingWindow/JsonDockingWindow"
-// import RdfDockingWindow from "../components/Windows/RdfDockingWindow/RdfDockingWindow"
-// import ProjectDockingWindow from "../components/Windows/ProjectDockingWindow/ProjectDockingWindow"
-// import TreeViewport from "../components/Windows/Viewport/TreeViewport"
 import SelectionDockingWindow from "../components/Windows/SelectionDockingWindow/SelectionDockingWindow"
 import LevelViewport from "../components/Windows/Viewport/LevelViewport"
-import QueryResultViewModal from "../components/QueryViewModal/QueryResultViewModal"
 import QueryResultView from "../components/QueryResultView/QueryResultView"
+import QuerytViewModal from "../components/QueryViewModal/QueryViewModal"
 
 const Home = () => {
     const [tabIdx, setTabIdx] = useState(0)
@@ -141,26 +132,53 @@ const Home = () => {
     const [queryID, setQueryID] = useState('')
     const [queryData, setQueryData] = useState({})
 
-    useEffect(() => {
-        // Re-render on measure/level selection
-        // console.log("Index >", levelPropData)
-    }, [levelPropData])
-
+    
+    
     
     const [aboxIRI, setABoxIRI] = useState('')
     
     const [dialogData, setDialogData] = useState({name: 'demo level'})
-
+    
     const [sparqlQueryData, setsparqlQueryData] = useState(null)
     const [QueryView, setQueryView] = useState(false)
     const [queryResultView, setqueryResultView] = useState(false)
-
     
-    // console.log(aboxIRI)
+    
 
-    // console.log(sparqlQueryData)
 
-    // console.log(dialogData)
+    useEffect(() => {
+        // console.log(levelPropData)
+        // console.log(dialogData)
+
+        const temp_level = {
+            filterCondition : "=",
+            level : {
+                name: dialogData.name, 
+                obj: dialogData.obj, 
+                sub: dialogData.sub, 
+                pred: null, 
+                prefix: dialogData.prefix
+            },
+            levelProperty:{},
+            propertyToBeViewed:{},
+            selectedInstances:[]
+        }
+
+        const isLevelAlreadyExists = levelPropData.some(item => {
+            return item.level.name === temp_level.level.name &&
+                   item.level.obj === temp_level.level.obj &&
+                   item.level.sub === temp_level.level.sub &&
+                   item.level.prefix === temp_level.level.prefix;
+        });
+        
+        if (!isLevelAlreadyExists && dialogData.sub != null) {
+            // console.log('aseeee')
+            setLevelPropData([...levelPropData,temp_level])
+        }
+        
+    }, [dialogData])
+    
+
 
     return (
         <Box disableGutters sx={{height: '100%'}}>
@@ -175,14 +193,13 @@ const Home = () => {
             sx={{ paddingTop: '15px', paddingX:'8px',height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'space-around' }}>
                 <Grid item md={4}>
                     <Viewport tabIdx={tabIdx} 
-                        queryID={queryID} queryData={queryData}
+                        queryData={queryData}
                         onSelectDataset={dataset => setSelectedDataset(dataset)}
                         onExtract={extractDatasetArray}  setTabIdx={setTabIdx} 
                         fileRef={fileRef}  datasetArray={datasetArray}
                         prefixMap={prefixes} 
                         onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
                         setTBoxFileRef={setTBoxFileRef} setABoxFileRef={setABoxFileRef}
-                        tboxRef={tboxFileRef} aboxRef={aboxFileRef}
                         addAggFunc={handleSetSelectedAggFunc}
                         addLevels={handleSelectedLevels}
                         onLevelPropSelect={handleLevelPropSelect}
@@ -203,8 +220,6 @@ const Home = () => {
 
                 <Grid item md={4}>
                     <SelectionDockingWindow 
-                    onQueryUpload={setQueryID}
-                    onQueryGeneration={setQueryData}
                     dataset={selectedDataset} 
                     measures={selectedMeasures} 
                     removeSelectedAggFunc={removeSelectedAggFunc} 
@@ -222,7 +237,7 @@ const Home = () => {
         
             <QueryResultView data={sparqlQueryData} aboxIRI={aboxIRI} modalOpen={queryResultView} setmodalOpen={setqueryResultView}/>
 
-            <QueryResultViewModal data={sparqlQueryData} modalOpen={QueryView} setmodalOpen={setQueryView}/>
+            <QuerytViewModal  data={sparqlQueryData} modalOpen={QueryView} setmodalOpen={setQueryView}/>
 
             
         </Box>

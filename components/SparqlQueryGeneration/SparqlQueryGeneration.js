@@ -11,18 +11,29 @@ const main = async (data) => {
     sparql += measureQuery
     sparql += '\nFROM <__FROM_TOKEN_GRAPH_IRI__>\n'
     sparql += `\nWHERE {\n\t?o a qb:Observation .\n\t?o qb:dataSet <${dataset.iri}> .\n\t`
+
     sparql += appendMeasuresFilter(measures)
     sparql += '\n\t'
     sparql += appendLevelsFilter(levels)
-    sparql += "\n\tFILTER(\n\t\t"
-    sparql += appendInstanceFilter(levels)
-    sparql += "\n\t) .\n}\n"
+    
+    if(levels.length > 0){
+        sparql += "\n\tFILTER(\n\t\t"
+        sparql += appendInstanceFilter(levels)
+        sparql += "\n\t) .\n}\n"
+    }
+    else{
+        sparql += '\n}\n'
+    }
     
     // Group by and order by clause
     sparql += "GROUP BY " + selectedCols.join(' ') + ' ' + selectedMeasures.join(' ') + '\n'
     sparql += "ORDER BY " + selectedCols.join(' ') + ' ' + selectedMeasures.join(' ') + '\n'
     // console.log(sparql)
     return {sparql, selectedColumns: [...selectedCols, ...selectedMeasures]}
+}
+
+const checkIfWithInstance = (levels)=>{
+
 }
 
 const appendLevelsQuery = (levels) => {
@@ -68,9 +79,6 @@ const appendMeasuresFilter = (measures) => {
 
     for(let idx = 0 ; idx < measures.length ; idx++) {
         const m = measures[idx].measure
-
-        
-        
         selectedRows.push(`?o <${m.sub}> ?m${count} . `)
     }
     return selectedRows.join('\n\t')
@@ -91,18 +99,18 @@ const appendLevelsFilter = (levels) => {
 
         selectedRows.push(`?o <${level.sub}> ${r_name} . `)
 
-        if(Boolean(levelProperty)) {
+        if(Object.keys(levelProperty).length !== 0) {
             selectedRows.push(`${r_name} <${levelProperty.sub}> ${r_name}_${levelProperty.name} . `)
             selectedRows.push(`${r_name} qb4o:memberOf <${level.sub}> . `)
         }
 
-        if(Boolean(propertyToBeViewed)) {
+        if(Object.keys(propertyToBeViewed).length !== 0) {
             if(!hash.get(propertyToBeViewed.name)) hash.set(propertyToBeViewed.name, 0)
             const val = hash.get(propertyToBeViewed.name)
             selectedRows.push(`${r_name} <${propertyToBeViewed.sub}> ?${level.name}_${propertyToBeViewed.name}_${val} . `)
             hash.set(propertyToBeViewed.name, val + 1)
         }
-    })
+    }) 
 
     return selectedRows.join('\n\t')
 }
@@ -113,19 +121,22 @@ const appendInstanceFilter = (levels) => {
     
     levels.forEach(item => {
         const {level, levelProperty, selectedInstances, filterCondition} = item
+
+        if(selectedInstances.length>0){
+            if(!hash.get(level.name)) hash.set(level.name, 0)
+            const val = hash.get(level.name)
+            hash.set(level.name, val + 1)
+            const r_name = `?${level.name}_${val}_${levelProperty.name}`
+    
+            selectedInstances.forEach(instance => {
+                let temp = `(${r_name} ${filterCondition} `
+    
+                if(instance.sub.search('http') < 0) temp += `"${instance.sub}")`
+                else temp += `<${instance.sub}>)`
+                selectedRows.push(temp)
+            })
+        }
         
-        if(!hash.get(level.name)) hash.set(level.name, 0)
-        const val = hash.get(level.name)
-        hash.set(level.name, val + 1)
-        const r_name = `?${level.name}_${val}_${levelProperty.name}`
-
-        selectedInstances.forEach(instance => {
-            let temp = `(${r_name} ${filterCondition} `
-
-            if(instance.sub.search('http') < 0) temp += `"${instance.sub}")`
-            else temp += `<${instance.sub}>)`
-            selectedRows.push(temp)
-        })
     })
 
     return selectedRows.join(' ||\n\t\t')

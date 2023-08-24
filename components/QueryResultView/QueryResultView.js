@@ -11,7 +11,7 @@ export default function QueryResultView({data, aboxIRI, modalOpen, setmodalOpen}
                 </DialogContent>
 
                 <DialogActions sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-                    <Button sx={{marginLeft:'auto'}} onClick={()=>setmodalOpen(false)}>
+                    <Button sx={{marginLeft:'auto',fontSize:'17px',backgroundColor:''}} onClick={()=>setmodalOpen(false)}>
                         Close
                     </Button>
                 </DialogActions>

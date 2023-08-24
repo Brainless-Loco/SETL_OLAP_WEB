@@ -4,7 +4,7 @@ import { useEffect, useState,createContext } from "react"
 import FileNameList from "../Windows/ListViewComponents/FileNameListItem"
 import { getBytes, getDownloadURL, getStorage, ref,firebase } from "firebase/storage"
 import TreeView from "../HomeComponents/TreeView"
-import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material"
+import { CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material"
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import MeasuresList from "../Windows/ListViewComponents/MeasureList/MeasuresList"
@@ -17,10 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-const DatasetTab = ({value, index, datasetArray, 
-    prefixMap, onSelectDataset, onLevelPropSelect, 
-    onMeasureAggrFuncSelect, aboxIRI, addAggFunc,
-    dialogData,
+const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect, 
+    onMeasureAggrFuncSelect, addAggFunc,
     setDialogData
 
     }) => {
@@ -34,13 +32,7 @@ const DatasetTab = ({value, index, datasetArray,
     const [dims, setDims] = useState([])
     const [selectedDataset, setSelectedDataset] = useState('')
     const [open, setOpen] = useState(false) // State for dialog(Modal)
-    // const [dialogData, setDialogData] = useState({name: 'demo level'})
     
-    
-    const onDialogCancel = () => {
-        // setDialogData({name: 'demo level'})
-        setOpen(false)
-    }
 
     const onLevelSelect = (levelRef) => {
         setOpen(true)
@@ -48,8 +40,10 @@ const DatasetTab = ({value, index, datasetArray,
         // console.log("Level Select", levelRef)
     }
 
-    const [selections,setSelections] = useState([])
-    const [prefixes,setPrefixes] = useState(new Map())
+    // const [selections,setSelections] = useState([])
+    // const [prefixes,setPrefixes] = useState(new Map())
+
+    // console.log(onLevelPropSelect)
 
 
     const extractListItems = () => {
@@ -94,7 +88,7 @@ const DatasetTab = ({value, index, datasetArray,
     }
 
     return (
-        <Box hidden={value != index} sx={{width: '100%'}}>
+        <Box sx={{width: '100%'}}>
             <Box hidden={!loading}>
                 <Typography sx={{color:'#08094f',fontSize:'14px',fontWeight:'bold',textAlign:'center'}}> 
                     Select a TBox File and an ABox file to extract dataset(s).
@@ -114,13 +108,18 @@ const DatasetTab = ({value, index, datasetArray,
                         ))}
                     </Select>
                 </FormControl>
-                {/* TODO: Dimension tree, modify it */}
+                
                 <Box sx={{marginTop:'15px'}} hidden={!Boolean(selectedDataset)}>
                     <FileNameList listName='Dimensions' list={dims} onItemClick={onLevelSelect} mdProperty/>
                     <MeasuresList list={measures} onMeasureAggrFuncSelect={onMeasureAggrFuncSelect} addAggFunc={addAggFunc}/>
                 </Box>
                 {/* <LevelDialog open={open} handleClose={onDialogCancel} data={dialogData} aboxIRI={aboxIRI} onDone={onLevelPropSelect}/> */}
             </Box>
+            {/* {
+                loading&& <Box sx={{height:'100px',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}>
+                    <CircularProgress sx={{color:'#08094f'}}/>
+                </Box>
+            } */}
         </Box>
     )
 }

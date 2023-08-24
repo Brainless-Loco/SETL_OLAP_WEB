@@ -6,8 +6,8 @@ import Link from 'next/link'
 
 const MyAppbar = () => {
     return (
-        <AppBar position='static' sx={{height:'40px',overflow:'hidden'}}>
-            <Container maxWidth='xl' sx={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'#08094f',height:'100%'}}>
+        <AppBar position='static' sx={{height:'40px',overflow:'hidden',backgroundColor:'#08094f'}}>
+            <Container maxWidth='xl' sx={{display:'flex',justifyContent:'center',alignItems:'center',backgroundColor:'#08094f',height:'100%',width:'100%'}}>
                 <Toolbar disableGutters sx={{cursor:'pointer'}}>
                     <Typography 
                     variant='body1'

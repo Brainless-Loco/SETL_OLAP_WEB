@@ -127,16 +127,27 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
         if(data.name!='demo level'){
             // console.log(data.levelAttributes)
             setlevelAttributes(data.levelAttributes)
+            setSelectedLevelProp('')
+            setToBeViewedProperty('')
+        }
+        else{
+            // setLevelInstances([])
             
         }
+        setSelectedLevelProp('')
+        setToBeViewedProperty('')
+        setLevelInstances([])
     }, [data.name])
 
 
     useEffect(() => {
         if(selectedLevelProp.length>0 && toBeViewedProperty.length>0){
             fetchInstances()
+        }else{
+            // setLevelInstances([])
         }
     }, [selectedLevelProp,toBeViewedProperty])
+
     
     
 
@@ -148,7 +159,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             width: '100%',
         }}>
             {/* Bad practice, use card header instead */}
-            <CardHeader sx={{color:'#08094f',paddingBottom:'0px'}} title='Level Selections'/>
+            <CardHeader sx={{color:'#08094f',paddingBottom:'0px',paddingTop:'5px'}} title='Level Selections'/>
             
             {/* Seperate the components. */}
             <CardContent sx={{paddingTop:'5px'}}>
@@ -204,13 +215,15 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                 <Box sx={{ height: '400px', width: '100%',marginTop:'10px' }}>
                     {
                         !loading? 
-                        <DataGrid
-                            checkboxSelection
-                            onSelectionModelChange={(ids)=>{changeSelectedInstances(ids)}}
-                            columns={cols}
-                            rows={levelInstances}
-                            pageSize={10}
-                            rowsPerPageOptions={[10]} />:
+                            levelInstances.length>0?
+                                <DataGrid
+                                    checkboxSelection
+                                    onSelectionModelChange={(ids)=>{changeSelectedInstances(ids)}}
+                                    columns={cols}
+                                    rows={levelInstances}
+                                    pageSize={10}
+                                    rowsPerPageOptions={[10]} />:
+                                    <></>:
                         <Box sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%'}}>
                             <CircularProgress sx={{color:"#08094f"}} size={60}/>
                         </Box>

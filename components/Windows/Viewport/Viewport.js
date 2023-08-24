@@ -21,10 +21,8 @@ import QueryViewTab from "../../Tabs/QueryViewTab"
 import QueryResultsTab from "../../Tabs/QueryResultsTab"
 
 
-const Viewport = ({tabIdx, setTabIdx, 
-    tboxRef, onSelectDataset,
-    aboxRef, onExtract, 
-    setTBoxFileRef, queryID, queryData,
+const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtract, 
+    setTBoxFileRef,
     setABoxFileRef, datasetArray, 
     prefixMap, onMeasureAggrFuncSelect,
     onLevelPropSelect, addAggFunc,
@@ -34,19 +32,9 @@ const Viewport = ({tabIdx, setTabIdx,
     setABoxIRI
 
     }) => {
-    const handleTabChange = (e, val) => {
-        setTabIdx(val);
-    }
-
-    // console.log(aboxIRI)
-
-
-    // const [aboxIRI, setABoxIRI] = useState('')
-    const [tboxIRI, setTBoxIRI] = useState('')
 
     const onExtractDataset = (abox, tbox) => {
         setABoxIRI(abox)
-        setTBoxIRI(tbox)
         onExtract(abox, tbox)
     }
 
@@ -58,44 +46,18 @@ const Viewport = ({tabIdx, setTabIdx,
         width:'100%'
     }
 
-    const [execute, setExecute] = useState(false)
-    const onQueryExecution = () => {
-        setExecute(true)
-    }
-
-
     // console.log(aboxIRI)
 
     return (
         <Box >
             <Card >
-                {/* <CardHeader title='Viewport' sx={{color:'#08094f'}}/> */}
+                <CardHeader title='Cube Extraction' sx={{color:'#08094f',marginBottom:'0px',paddingBottom:'0px',paddingTop:'5px'}}/>
                 <CardContent style={flexSetting}>
-                    <Tabs value={tabIdx} onChange={handleTabChange}>
-                        <Tab  label='File List' value={0}/>
-                        {/* <Tab label='Dataset'/> */}
-                        {/* <Tab label='Sparql Editor' sx={{alignSelf: 'right'}}/> */}
-                        {/* <Tab label='Query Results' sx={{alignSelf: 'right'}}/> */}
-                    </Tabs>
                     <Box sx={{ height: 'auto', overflowY: 'auto',maxWidth:'100%'}}>
-                        <FileListTab value={tabIdx} index={0}
+                        <FileListTab
                             onExtractDataset={onExtractDataset} 
                             setTBoxFileRef={setTBoxFileRef} 
                             setABoxFileRef={setABoxFileRef}/>
-                        
-                        {/* <QueryViewTab 
-                            value={tabIdx} 
-                            index={3} 
-                            queryData={queryData} 
-                            onQueryExecution={onQueryExecution}/> */}
-
-                        {/* <QueryResultsTab 
-                            value={tabIdx} 
-                            index={4} 
-                            aboxIRI={aboxIRI}
-                            onFinish={setExecute}
-                            shallExecute={execute}
-                            queryID={queryID} /> */}
                     </Box>
                     <DatasetTab
                             onSelectDataset={onSelectDataset}

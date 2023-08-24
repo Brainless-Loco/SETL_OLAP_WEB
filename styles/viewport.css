@@ -1,0 +1,10 @@
+.extractBtn{
+    background-color: #08094f;
+    height: 30px;
+    border:2px solid transparent;
+}
+.extractBtn:hover{
+    background-color: rgb(243, 237, 237);
+    border: 2px solid #08094f;
+    color: #08094f;
+}

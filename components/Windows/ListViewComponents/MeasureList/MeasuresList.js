@@ -11,7 +11,7 @@ import { useState } from "react"
 import MeasureListItem from './MeasureListItem'
 
 const MeasuresList = ({list, onMeasureAggrFuncSelect,addAggFunc}) => {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <List sx={{

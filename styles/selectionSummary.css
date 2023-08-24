@@ -7,3 +7,14 @@
 .selectedItem:hover{
     color: red;
 }
+
+.getQueryBtn{
+    background-color: #08094f;
+    padding:10px 20px;
+    border:2px solid transparent;
+}
+.getQueryBtn:hover{
+    border:2px solid #08094f;
+    background-color: rgb(243, 237, 237);
+    color: #08094f;
+}

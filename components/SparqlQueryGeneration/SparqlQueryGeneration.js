@@ -1,5 +1,5 @@
 const main = async (data) => {
-    const { dataset, levels, measures } = data
+    const { dataset, levels, measures,aboxIRI } = data
     let sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\n" +
     "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\n" +
     "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n" +
@@ -9,14 +9,15 @@ const main = async (data) => {
     sparql += query
     sparql += '\n\t'
     sparql += measureQuery
-    sparql += '\nFROM <__FROM_TOKEN_GRAPH_IRI__>\n'
+    sparql += `\nFROM <${aboxIRI}>\n`
     sparql += `\nWHERE {\n\t?o a qb:Observation .\n\t?o qb:dataSet <${dataset.iri}> .\n\t`
 
     sparql += appendMeasuresFilter(measures)
     sparql += '\n\t'
     sparql += appendLevelsFilter(levels)
     
-    if(levels.length > 0){
+    // console.log(checkIfWithInstance(levels))
+    if(checkIfWithInstance(levels)==true){
         sparql += "\n\tFILTER(\n\t\t"
         sparql += appendInstanceFilter(levels)
         sparql += "\n\t) .\n}\n"
@@ -33,7 +34,17 @@ const main = async (data) => {
 }
 
 const checkIfWithInstance = (levels)=>{
+    // selectedInstances
 
+    let to_be_return = false;
+
+    levels.forEach(item => {
+        if(item.selectedInstances.length>0){
+            // console.log('paisi')
+            to_be_return = true;
+        }
+    })
+    return to_be_return;
 }
 
 const appendLevelsQuery = (levels) => {
@@ -41,10 +52,13 @@ const appendLevelsQuery = (levels) => {
     const selectedCols = []
     
     levels.forEach(item => {
+        // Object.keys(property).length !== 0
         const level = item.level
         const property = item.propertyToBeViewed
+        // console.log(level)
+        // console.log(property)
         if(!hash.get(level.name)) hash.set(level.name, 0)
-        selectedCols.push(` ?${level.name}${Boolean(property) ? `_${property.name}` : ''}_${hash.get(level.name)}`)
+        selectedCols.push(` ?${level.name}${Object.keys(property).length !== 0 ? `_${property.name}` : ''}_${hash.get(level.name)}`)
         hash.set(level.name, hash.get(level.name) + 1)
     })
 
@@ -91,7 +105,11 @@ const appendLevelsFilter = (levels) => {
     
     levels.forEach(item => {
         const {level, levelProperty, propertyToBeViewed} = item
-        
+
+        // console.log(levelProperty)
+
+        // const {levelProperty} = level
+
         if(!hash.get(level.name)) hash.set(level.name, 0)
         const val = hash.get(level.name)
         hash.set(level.name, val + 1)

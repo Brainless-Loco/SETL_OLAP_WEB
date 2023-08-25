@@ -10,7 +10,7 @@ import LevelSelectionSummaryFragment from './LevelSelectionItem/LevelSelectionSu
 
 import main from '../../SparqlQueryGeneration/SparqlQueryGeneration'
 
-const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, setQueryView, setqueryResultView, removeSelectedAggFunc}) => {
+const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, setQueryView, setqueryResultView, removeSelectedAggFunc,aboxIRI}) => {
     const validateData = () => {
         return measures.length && levels.length;
     }
@@ -19,7 +19,7 @@ const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, 
 
     const getQueryResult = async()=>{
         setLoading(true)
-        const newSparqlQuery = await main({measures, levels, dataset})
+        const newSparqlQuery = await main({measures, levels, dataset, aboxIRI})
         setsparqlQueryData(newSparqlQuery)
         setqueryResultView(true)
         setLoading(false)
@@ -29,7 +29,7 @@ const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, 
     const getQuery = async () => {
         setLoading(true)
 
-        const newSparqlQuery = await main({measures, levels, dataset})
+        const newSparqlQuery = await main({measures, levels, dataset,aboxIRI})
         setsparqlQueryData(newSparqlQuery)
         setQueryView(true)
         setLoading(false)

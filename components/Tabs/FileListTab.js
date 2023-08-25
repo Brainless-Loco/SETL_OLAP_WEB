@@ -37,7 +37,7 @@ const FileListTab = ({value, index, onExtractDataset}) => {
     useEffect(() => {
         if(graphs.length) return
         getGraphList();
-    }, [graphs])
+    }, [])
 
     return (
         <Box hidden={value != index} sx={{width: 'auto',display:'flex',justifyContent:'center',flexDirection:'column',flexWrap:'wrap',}}>

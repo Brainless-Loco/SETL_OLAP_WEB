@@ -10,7 +10,7 @@ import { useState } from "react"
 import CollapsingList from "./CollapsingList"
 
 const FileNameList = ({listName, list, onItemClick, mdProperty}) => {
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
 
     return (
         <List  sx={{

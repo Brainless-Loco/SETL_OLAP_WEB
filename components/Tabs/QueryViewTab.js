@@ -1,10 +1,7 @@
 import { Box } from "@mui/system"
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import { useEffect, useState } from "react";
-import { doc, getDoc, collection, getDocs, getFirestore, addDoc } from 'firebase/firestore'
-import { Button } from "@mui/material";
-
-const QueryViewTab = ({queryData}) => {
+const QueryViewTab = ({queryData, aboxIRI}) => {
     const [query, setQuery] = useState('')
 
     const fetchQuery = async () => {

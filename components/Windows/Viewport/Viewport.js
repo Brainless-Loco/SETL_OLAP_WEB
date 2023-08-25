@@ -42,18 +42,20 @@ const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtract,
         display:'flex',
         justifyContent:'center',
         flexWrap:'wrap',
-        flexDirection:'column',
-        width:'100%'
+        flexDirection:'row',
+        width:'100%',
+        maxHeight:'100vh',
+        overflowY:'auto'
     }
 
     // console.log(aboxIRI)
 
     return (
         <Box >
-            <Card >
+            <Card>
                 <CardHeader title='Cube Extraction' sx={{color:'#08094f',marginBottom:'0px',paddingBottom:'0px',paddingTop:'5px'}}/>
                 <CardContent style={flexSetting}>
-                    <Box sx={{ height: 'auto', overflowY: 'auto',maxWidth:'100%'}}>
+                    <Box sx={{ height: 'auto', overflowY: 'auto',width:'100%'}}>
                         <FileListTab
                             onExtractDataset={onExtractDataset} 
                             setTBoxFileRef={setTBoxFileRef} 

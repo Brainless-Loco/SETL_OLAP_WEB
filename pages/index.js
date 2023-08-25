@@ -144,11 +144,10 @@ const Home = () => {
     const [queryResultView, setqueryResultView] = useState(false)
     
     
-
+    // console.log(aboxIRI)
 
     useEffect(() => {
         // console.log(levelPropData)
-        // console.log(dialogData)
 
         const temp_level = {
             filterCondition : "=",
@@ -157,7 +156,9 @@ const Home = () => {
                 obj: dialogData.obj, 
                 sub: dialogData.sub, 
                 pred: null, 
-                prefix: dialogData.prefix
+                prefix: dialogData.prefix,
+                levelProperty: {},
+                selectedInstances:[],
             },
             levelProperty:{},
             propertyToBeViewed:{},
@@ -177,6 +178,7 @@ const Home = () => {
         }
         
     }, [dialogData])
+
     
 
 
@@ -224,7 +226,7 @@ const Home = () => {
                     measures={selectedMeasures} 
                     removeSelectedAggFunc={removeSelectedAggFunc} 
                     levels={levelPropData} 
-                    aboxRef={aboxFileRef}
+                    aboxIRI={aboxIRI}
                     setsparqlQueryData={setsparqlQueryData}
                     setQueryView={setQueryView}
                     setqueryResultView={setqueryResultView}
@@ -237,7 +239,7 @@ const Home = () => {
         
             <QueryResultView data={sparqlQueryData} aboxIRI={aboxIRI} modalOpen={queryResultView} setmodalOpen={setqueryResultView}/>
 
-            <QuerytViewModal  data={sparqlQueryData} modalOpen={QueryView} setmodalOpen={setQueryView}/>
+            <QuerytViewModal  data={sparqlQueryData} aboxIRI={aboxIRI} modalOpen={QueryView} setmodalOpen={setQueryView}/>
 
             
         </Box>

@@ -7,7 +7,7 @@ const uploadToRdfStorage = async (file) => {
     var snap = null
 
     uploadBytes(storageRef, file).then(snapshot => {
-        console.log("Uploaded successfully!\nSnapshot:", snapshot)
+        // console.log("Uploaded successfully!\nSnapshot:", snapshot)
     })
 }
 

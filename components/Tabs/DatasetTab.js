@@ -1,15 +1,11 @@
 import Box from "@mui/material/Box"
 import Typography from '@mui/material/Typography'
-import { useEffect, useState,createContext } from "react"
+import { useEffect, useState } from "react"
 import FileNameList from "../Windows/ListViewComponents/FileNameListItem"
-import { getBytes, getDownloadURL, getStorage, ref,firebase } from "firebase/storage"
-import TreeView from "../HomeComponents/TreeView"
-import { CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material"
+import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import MeasuresList from "../Windows/ListViewComponents/MeasureList/MeasuresList"
-import LevelDialog from "../Windows/Modals/LevelDialog"
-
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,

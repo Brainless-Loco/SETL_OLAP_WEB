@@ -10,7 +10,7 @@ const handler = async (req, res) => {
     const filePathPromise = await fetch(`http://localhost:3000/api/get_file_path?fileName=${fileName}&fileType=abox`)
     const filePath = await filePathPromise.text();
     if(!filePathPromise.ok) {
-        console.log("File not found");
+        // console.log("File not found");
         res.status(404).send(`Cannot find reference to file ${fileName} .`)
         return
     }

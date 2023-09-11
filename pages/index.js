@@ -77,7 +77,7 @@ const Home = () => {
     }
     
     const removeSelectedAggFunc = (measure, func) =>{
-        console.log("On remove aggr func >", {measure, func})
+        // console.log("On remove aggr func >", {measure, func})
         let temp = [...selectedMeasures]
         
         const f = temp.findIndex(e => e.measure.name === measure.name)
@@ -98,6 +98,7 @@ const Home = () => {
 
     const [levelPropData, setLevelPropData] = useState([])
     const handleLevelPropSelect = (data) => {
+
         let temp = [...levelPropData]
         const { 
             level, 
@@ -165,11 +166,13 @@ const Home = () => {
             selectedInstances:[]
         }
 
+        
+        
         const isLevelAlreadyExists = levelPropData.some(item => {
             return item.level.name === temp_level.level.name &&
-                   item.level.obj === temp_level.level.obj &&
-                   item.level.sub === temp_level.level.sub &&
-                   item.level.prefix === temp_level.level.prefix;
+            item.level.obj === temp_level.level.obj &&
+            item.level.sub === temp_level.level.sub &&
+            item.level.prefix === temp_level.level.prefix;
         });
         
         if (!isLevelAlreadyExists && dialogData.sub != null) {
@@ -178,9 +181,8 @@ const Home = () => {
         }
         
     }, [dialogData])
-
     
-
+    // console.log(dialogData)
 
     return (
         <Box disableGutters sx={{height: '100%'}}>

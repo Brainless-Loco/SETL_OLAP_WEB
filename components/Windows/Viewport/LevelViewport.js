@@ -73,7 +73,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
 
         const req = await fetch(`/api/generate_level_instances?${params.toString()}`)
         if (!req.ok) {
-            console.log("Internal server error")
+            // console.log("Internal server error")
             setLoading(false)
             return
         }

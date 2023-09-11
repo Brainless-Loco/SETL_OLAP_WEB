@@ -16,9 +16,9 @@ module.exports = class LevelInstanceFactory {
         this.level = level
         this.levelProp = levelProp
 
-        console.log('source', this.source)
-        console.log("Level", level)
-        console.log("Level Property", levelProp)
+        // console.log('source', this.source)
+        // console.log("Level", level)
+        // console.log("Level Property", levelProp)
 
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
@@ -34,13 +34,13 @@ module.exports = class LevelInstanceFactory {
     }
 
     async executeQuery(sparql) {
-        console.log("API > get_level_instance > Executing query", sparql)
+        // console.log("API > get_level_instance > Executing query", sparql)
 
         const client = new SparqlClient()
         const result = await client.query(sparql)
         this.resultSet = result.data
 
-        console.log("API > get_level_instance", "Done said good bye")
+        // console.log("API > get_level_instance", "Done said good bye")
     }
 
     extractData() {

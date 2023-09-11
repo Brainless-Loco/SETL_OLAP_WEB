@@ -20,7 +20,7 @@ module.exports = class Dataset {
 
     setMeasureArray(measureArray) {
       this.measureArray = [...measureArray]
-      console.log("Cube measure array", this.measureArray)
+      // console.log("Cube measure array", this.measureArray)
     }
 
     setCube(cube) { this.cube = cube }

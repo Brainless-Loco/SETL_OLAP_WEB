@@ -23,23 +23,12 @@ const main = async (aboxIRI, tboxIRI) => {
         await extractCube(tboxIRI, datasetList[i])
     }
 
-    
-
-    // dsFact.getDatasetArray().forEach(dataset => {
-    //     fs.writeFile('output.json', JSON.stringify(dataset), error => {
-    //         if(error) {
-    //             console.error("Error saving file!")
-    //             return
-    //         }
-    //         console.log("Saved file to \"output.json\"")
-    //     })
-    // });
-
-    
     return datasetList;
 }
 
 const extractCube = async (tbox, dataset) => {
+    // console.log("tbox "+tbox)
+    // console.log("dataset "+dataset.iri)
     const cuFact = new CubeFactory(tbox , dataset)
     await cuFact.extractOlapDatasetCube()
     const isCuboid = cuFact.extractData()
@@ -49,7 +38,7 @@ const extractCube = async (tbox, dataset) => {
     
 
     if(isCuboid) {
-        console.log('Over here, cuboid in action')
+        // console.log('Over here, cuboid in action')
         // Set up dimensions
         const dimFact = new DimensionFactory(tbox, cube)
         await dimFact.extractDimensionFromLevel()
@@ -114,6 +103,8 @@ const extractHierarchyStepLevelList = async (tbox, hierarchy) => {
     for(let i = 0 ; i < levels.length ; i++){
         await extractLevelAttributes(tbox, levels[i])
     }
+
+    // console.log(levels)
 
     hierarchy.setHierarchyStep(levels)
 }

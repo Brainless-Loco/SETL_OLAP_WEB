@@ -43,7 +43,7 @@ module.exports = class CubeFactory {
 
             if(pred.includes('isCuboidOf')) {
                 this.isCuboid = true
-                console.log('Cuboid found')
+                // console.log('Cuboid found')
                 return
             }
         })

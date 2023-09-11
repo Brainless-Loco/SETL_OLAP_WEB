@@ -15,7 +15,7 @@ module.exports = class DatasetFactory {
         const tempDataset = new Dataset()
         const bindings = this.resultSet.results.bindings
 
-        console.log("Dataset Binding", bindings);
+        // console.log("Dataset Binding", bindings);
 
         bindings.forEach((hash, idx) => {
             // const sub = hash.get('s').value

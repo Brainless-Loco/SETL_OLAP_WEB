@@ -116,6 +116,7 @@ const appendLevelsFilter = (levels) => {
         const r_name = `?${level.name}_${val}`
 
         selectedRows.push(`?o <${level.sub}> ${r_name} . `)
+        // console.log(level)
 
         if(Object.keys(levelProperty).length !== 0) {
             selectedRows.push(`${r_name} <${levelProperty.sub}> ${r_name}_${levelProperty.name} . `)

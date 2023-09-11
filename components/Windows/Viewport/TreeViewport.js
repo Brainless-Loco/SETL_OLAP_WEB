@@ -90,7 +90,7 @@ const TreeViewport = ({datasetArray, prefixMap, onMeasureAggrFuncSelect}) => {
         setCubes(cubes)
         setDims(dimens)
         
-        console.log("TreeView extraction", {datasetArray, datasets, cubes, dimens})
+        // console.log("TreeView extraction", {datasetArray, datasets, cubes, dimens})
     }
 
     useEffect(() => {

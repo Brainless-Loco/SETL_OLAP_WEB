@@ -21,7 +21,7 @@ const main = async (data) => {
     // Group by and order by clause
     sparql += "GROUP BY " + selectedCols.join(' ') + ' ' + selectedMeasures.join(' ') + '\n'
     sparql += "ORDER BY " + selectedCols.join(' ') + ' ' + selectedMeasures.join(' ') + '\n'
-    console.log(sparql)
+    // console.log(sparql)
     return {sparql, selectedColumns: [...selectedCols, ...selectedMeasures]}
 }
 
@@ -90,6 +90,8 @@ const appendLevelsFilter = (levels) => {
         const r_name = `?${level.name}_${val}`
 
         selectedRows.push(`?o <${level.sub}> ${r_name} . `)
+        // console.log("This is level Property")
+        // console.log(levelProperty)
 
         if(Boolean(levelProperty)) {
             selectedRows.push(`${r_name} <${levelProperty.sub}> ${r_name}_${levelProperty.name} . `)

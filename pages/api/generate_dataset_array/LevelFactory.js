@@ -13,7 +13,7 @@ module.exports = class LevelFactory {
     
     async fetchCuboidLevel(cuboid) {
         this.isCuboid = true
-        console.log(cuboid)
+        // console.log(cuboid)
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
@@ -36,24 +36,65 @@ module.exports = class LevelFactory {
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        + `SELECT * FROM <${this.source}>` + "WHERE {"
-        + "?heir a qb4o:Hierarchy. \n"
-        + "?heir qb4o:hasLevel ?level. \n"
-        + `FILTER(?heir=<${hierarchy.sub}>)`
-        + "}"
+        // + `SELECT * FROM <${this.source}>`
+        +  `SELECT DISTINCT ?parent ?child <${this.source}>`
+        +"WHERE {"
+        // + "?heir a qb4o:Hierarchy. \n"
+        // + "?heir qb4o:hasLevel ?level. \n"
+        // + `FILTER(?heir=<${hierarchy.sub}>)`
+        // + "}"
+        + "?step a qb4o:HierarchyStep. \n"
+        + "?step qb4o:inHierarchy <" + hierarchy.sub + ">. \n"
+        + "?step qb4o:parentLevel ?parent. \n"
+        + "?step qb4o:childLevel ?child. \n"
+        + "}";  
 
         await this.executeQuery(sparql)
     }
     
     extractData() {
         const bindings = this.resultSet.results.bindings
-        bindings.forEach((item, idx) => {
-            if(this.isCuboid)
-                this.levelArray.push(new Level(item['o'].value, null, null))
-            else this.levelArray.push(new Level(item['level'].value, null, null))
+        // console.log(bindings)
+        
 
-            this.levelArray[idx].extractName()
-        })
+        if(this.isCuboid){
+            bindings.forEach((item, idx) => {
+                this.levelArray.push(new Level(item['o'].value, null, null))
+                this.levelArray[idx].extractName()
+            })
+        }
+        else{
+            let parent = new Map()
+            let child = new Map()
+            bindings.forEach((item,idx)=>{
+                parent.set(item.child.value,item.parent.value)
+                child.set(item.parent.value, item.child.value)
+            })
+
+            let withoutParentLevel = ''
+
+            let goOn = true
+            bindings.forEach((item,idx)=>{
+                if(parent.has(item.parent.value)==false && goOn == true){
+                    withoutParentLevel = item.parent.value
+                    goOn = false
+                }
+            })
+            goOn = true
+            let sz = 0
+            while(goOn==true){
+                this.levelArray.push(new Level(withoutParentLevel, null, null))
+                
+                this.levelArray[sz].extractName()
+                sz = sz+1
+                if(child.has(withoutParentLevel)==true){
+                    withoutParentLevel = child.get(withoutParentLevel)
+                }
+                else{
+                    goOn=false
+                }
+            }
+        }
     }
     
     getLevelArray() {

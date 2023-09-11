@@ -19,7 +19,7 @@ module.exports = class Cube {
 
   setMeasureArray(measureArray) {
     this.measureArray = [...measureArray]
-    console.log("Cube measure array", this.measureArray)
+    // console.log("Cube measure array", this.measureArray)
   }
 
   setDimensionList(dimensionList) { this.dimensionList = dimensionList }

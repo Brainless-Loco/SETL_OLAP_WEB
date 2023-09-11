@@ -59,7 +59,7 @@ module.exports = class MeasureFactory {
         }
 
         this.measureArray = temp
-        console.log("Measure Array", this.measureArray)
+        // console.log("Measure Array", this.measureArray)
     }
 
     async getMeasureRange(measure) {
@@ -87,12 +87,12 @@ module.exports = class MeasureFactory {
     }
     
     async executeQueryForRange(sparql) {
-        console.log("API > generate_query > getMeasureRange", "Executing query")
+        // console.log("API > generate_query > getMeasureRange", "Executing query")
     
         const client = new SparqlClient()
         const result = await client.query(sparql)
     
-        console.log("API > generate_query > getMeasureRange", "Done said good bye")
+        // console.log("API > generate_query > getMeasureRange", "Done said good bye")
         return result.data
     }
 

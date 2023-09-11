@@ -81,7 +81,7 @@ const LevelDialog = ({ open, handleClose, data, aboxIRI, onDone }) => {
     }
 
     const fetchInstances = async () => {
-        console.log("Request > Level Instance > Trying to fetch level instances");
+        // console.log("Request > Level Instance > Trying to fetch level instances");
         setLoading(true)
 
         // Code
@@ -94,7 +94,7 @@ const LevelDialog = ({ open, handleClose, data, aboxIRI, onDone }) => {
 
         const req = await fetch(`/api/generate_level_instances?${params.toString()}`)
         if (!req.ok) {
-            console.log("Internal server error")
+            // console.log("Internal server error")
             setLoading(false)
             return
         }
@@ -106,7 +106,7 @@ const LevelDialog = ({ open, handleClose, data, aboxIRI, onDone }) => {
         setLevelInstances(temp)
         ///console.log("API > generate_level_instances: ", res)
         setLoading(false)
-        console.log('Level Instances > Done said good bye')
+        // console.log('Level Instances > Done said good bye')
     }
 
     const changeSelectedInstances = (ids) => {
@@ -121,7 +121,7 @@ const LevelDialog = ({ open, handleClose, data, aboxIRI, onDone }) => {
     const toSymbol = (filterCond) => {
         var regex = /\(([^)]+)\)/
         const arr = regex.exec(filterCond)
-        console.log(arr)
+        // console.log(arr)
         return arr[1]
     }
 
@@ -135,7 +135,7 @@ const LevelDialog = ({ open, handleClose, data, aboxIRI, onDone }) => {
             selectedInstances
         }
 
-        console.log("Level Modal > Done >", dataPack)
+        // console.log("Level Modal > Done >", dataPack)
         onDone(dataPack)
         onClose()
     }

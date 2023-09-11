@@ -17,7 +17,7 @@ const handler = async (req, res) => {
         const client = new SparqlClient()
         const result = await client.query(q)
 
-        console.log("API > execute_generate_qury > query", q)
+        // console.log("API > execute_generate_qury > query", q)
 
         //console.log('Deleting query from the database >', queryID)
         //deleteDoc(doc(db, 'queries', queryID))

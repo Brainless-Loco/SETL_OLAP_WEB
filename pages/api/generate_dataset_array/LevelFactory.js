@@ -36,13 +36,8 @@ module.exports = class LevelFactory {
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        // + `SELECT * FROM <${this.source}>`
         +  `SELECT DISTINCT ?parent ?child <${this.source}>`
         +"WHERE {"
-        // + "?heir a qb4o:Hierarchy. \n"
-        // + "?heir qb4o:hasLevel ?level. \n"
-        // + `FILTER(?heir=<${hierarchy.sub}>)`
-        // + "}"
         + "?step a qb4o:HierarchyStep. \n"
         + "?step qb4o:inHierarchy <" + hierarchy.sub + ">. \n"
         + "?step qb4o:parentLevel ?parent. \n"
@@ -55,7 +50,6 @@ module.exports = class LevelFactory {
     extractData() {
         const bindings = this.resultSet.results.bindings
         // console.log(bindings)
-        
 
         if(this.isCuboid){
             bindings.forEach((item, idx) => {
@@ -81,12 +75,9 @@ module.exports = class LevelFactory {
                 }
             })
             goOn = true
-            let sz = 0
             while(goOn==true){
                 this.levelArray.push(new Level(withoutParentLevel, null, null))
-                
-                this.levelArray[sz].extractName()
-                sz = sz+1
+                this.levelArray[this.levelArray.length-1].extractName()
                 if(child.has(withoutParentLevel)==true){
                     withoutParentLevel = child.get(withoutParentLevel)
                 }

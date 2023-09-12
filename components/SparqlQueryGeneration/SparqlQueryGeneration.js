@@ -59,7 +59,7 @@ const appendLevelsQuery = (levels) => {
         // console.log(level)
         // console.log(property)
         if(!hash.get(level.name)) hash.set(level.name, 0)
-        selectedCols.push(` ?${hierarchy.split('#')[1]}_${level.name}${Object.keys(property).length !== 0 ? `_${property.name}` : ''}_${hash.get(level.name)}`)
+        selectedCols.push(` ?${hierarchy.split('#')[1]}_${level.name}${Object.keys(property).length !== 0 ? `_${property.name}` : ''}`)
         hash.set(level.name, hash.get(level.name) + 1)
     })
 
@@ -121,7 +121,7 @@ const appendLevelsFilter = (levels) => {
         let loopOn = true
 
         serialForRollUp.forEach((item,idx) => {
-            const r_name = `${hierarchy.split('#')[1]}_${item[0].split('#')[1]}_${val}`
+            const r_name = `${hierarchy.split('#')[1]}_${item[0].split('#')[1]}`
             if(idx==0){
                 selectedRows.push(`?o <${item[0]}> ?${r_name} . `)
                 if(level.sub==item[0]){
@@ -130,31 +130,33 @@ const appendLevelsFilter = (levels) => {
                 else{ 
                     selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}>. `)
                 }
+                lastRName = r_name
             }
             else if(loopOn==true){
                 selectedRows.push(`?${lastRName} <${item[1]}> ?${r_name} .`)
                 selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}> . `)
+                lastRName = r_name
             }
             if(level.sub==item[0]) loopOn = false
-            lastRName = r_name
         });
 
         // selectedRows.push(`?o <${level.sub}> ${r_name} . `)
         // console.log(selectedRows)
 
         if(Object.keys(levelProperty).length !== 0) {
-            selectedRows.push(`${r_name} <${levelProperty.sub}> ${r_name}_${levelProperty.name} . `)
-            selectedRows.push(`${r_name} qb4o:memberOf <${level.sub}>.`)
+            selectedRows.push(`?${lastRName} <${levelProperty.sub}> ?${lastRName}_${levelProperty.name} . `)
+            // selectedRows.push(`?${lastRName} qb4o:memberOf <${level.sub}>.`)
         }
 
         if(Object.keys(propertyToBeViewed).length !== 0) {
             if(!hash.get(propertyToBeViewed.name)) hash.set(propertyToBeViewed.name, 0)
             const val = hash.get(propertyToBeViewed.name)
-            selectedRows.push(`${r_name} <${propertyToBeViewed.sub}> ?${level.name}_${propertyToBeViewed.name}_${val} . `)
+            selectedRows.push(`?${lastRName} <${propertyToBeViewed.sub}> ?${level.name}_${propertyToBeViewed.name} . `)
             hash.set(propertyToBeViewed.name, val + 1)
         }
     }) 
-    // selectedRows = [...new Set(selectedRows)]
+    selectedRows = [...new Set(selectedRows)]
+    console.log(selectedRows)
     return selectedRows.join('\n\t')
 }
 
@@ -163,13 +165,13 @@ const appendInstanceFilter = (levels) => {
     const hash = new Map()
     
     levels.forEach(item => {
-        const {level, levelProperty, selectedInstances, filterCondition} = item
+        const {level, levelProperty, selectedInstances, filterCondition, hierarchy} = item
 
         if(selectedInstances.length>0){
             if(!hash.get(level.name)) hash.set(level.name, 0)
             const val = hash.get(level.name)
             hash.set(level.name, val + 1)
-            const r_name = `?${level.name}_${val}_${levelProperty.name}`
+            const r_name = `?${hierarchy.split('#')[1]}_${level.name}_${levelProperty.name}`
     
             selectedInstances.forEach(instance => {
                 let temp = `(${r_name} ${filterCondition} `

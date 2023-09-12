@@ -102,16 +102,18 @@ const Home = () => {
         let temp = [...levelPropData]
         const { 
             level, 
-            levelProperty, 
+            levelProperty,
+            hierarchy, 
             selectedInstances, 
             propertyToBeViewed, 
-            filterCondition 
+            filterCondition,
+            serialForRollUp 
         } = data
 
         const f = temp.findIndex(item => item.level.name === level.name)
         if(f > -1) {
             // Code
-            let arr = [...temp[f].selectedInstances, ...selectedInstances]
+            let arr = selectedInstances
             arr = [...new Set(arr)]
             
             temp[f] = {
@@ -119,9 +121,12 @@ const Home = () => {
                 levelProperty, 
                 selectedInstances: arr, 
                 propertyToBeViewed, 
-                filterCondition
+                filterCondition,
+                hierarchy,
+                serialForRollUp
             }
-        } else {
+        } 
+        else {
             temp.push(data)
         }
         
@@ -130,7 +135,6 @@ const Home = () => {
 
     const [selectedDataset, setSelectedDataset] = useState({})
 
-    const [queryID, setQueryID] = useState('')
     const [queryData, setQueryData] = useState({})
 
     
@@ -158,8 +162,6 @@ const Home = () => {
                 sub: dialogData.sub, 
                 pred: null, 
                 prefix: dialogData.prefix,
-                levelProperty: {},
-                selectedInstances:[],
             },
             hierarchy: dialogData.hierarchy,
             levelProperty:{},
@@ -178,7 +180,6 @@ const Home = () => {
         });
         
         if (!isLevelAlreadyExists && dialogData.sub != null) {
-            // console.log('aseeee')
             setLevelPropData([...levelPropData,temp_level])
         }
         

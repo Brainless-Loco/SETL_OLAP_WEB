@@ -106,14 +106,31 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
     }
 
     const handleDone = () => {
-        const {name, obj, sub, pred, prefix} = data
+        const {name, obj, sub, pred, prefix,hierarchy,serialForRollUp} = data
         const dataPack = {
             level: {name, obj, sub, pred, prefix},
+            hierarchy: hierarchy,
             levelProperty: findCurrentLevelPropObj(selectedLevelProp),
             propertyToBeViewed: findCurrentLevelPropObj(toBeViewedProperty),
             filterCondition: toSymbol(selectedFilterCondition),
+            serialForRollUp: serialForRollUp,
             selectedInstances
         }
+
+
+        // filterCondition : "=",
+        //     level : {
+        //         name: dialogData.name, 
+        //         obj: dialogData.obj, 
+        //         sub: dialogData.sub, 
+        //         pred: null, 
+        //         prefix: dialogData.prefix,
+        //     },
+        //     hierarchy: dialogData.hierarchy,
+        //     levelProperty:{},
+        //     propertyToBeViewed:{},
+        //     selectedInstances:[],
+        //     serialForRollUp: dialogData.serialForRollUp
 
         // console.log("Level Modal > Done >", dataPack)
         // console.log(dataPack)

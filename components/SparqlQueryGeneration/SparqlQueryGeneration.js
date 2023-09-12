@@ -55,10 +55,11 @@ const appendLevelsQuery = (levels) => {
         // Object.keys(property).length !== 0
         const level = item.level
         const property = item.propertyToBeViewed
+        const hierarchy = item.hierarchy
         // console.log(level)
         // console.log(property)
         if(!hash.get(level.name)) hash.set(level.name, 0)
-        selectedCols.push(` ?${level.name}${Object.keys(property).length !== 0 ? `_${property.name}` : ''}_${hash.get(level.name)}`)
+        selectedCols.push(` ?${hierarchy.split('#')[1]}_${level.name}${Object.keys(property).length !== 0 ? `_${property.name}` : ''}_${hash.get(level.name)}`)
         hash.set(level.name, hash.get(level.name) + 1)
     })
 
@@ -104,23 +105,46 @@ const appendLevelsFilter = (levels) => {
     const selectedRows = []
     
     levels.forEach(item => {
-        const {level, levelProperty, propertyToBeViewed} = item
+        const {level, levelProperty, propertyToBeViewed,hierarchy,serialForRollUp} = item
 
-        // console.log(levelProperty)
+        // console.log(level.sub)
+        // console.log(hierarchy)
 
         // const {levelProperty} = level
 
         if(!hash.get(level.name)) hash.set(level.name, 0)
         const val = hash.get(level.name)
         hash.set(level.name, val + 1)
-        const r_name = `?${level.name}_${val}`
+        // const r_name = `?${hierarchy.split('#')[1]}_${level.name}_${val}`
+        let lastRName = ''
 
-        selectedRows.push(`?o <${level.sub}> ${r_name} . `)
-        // console.log(level)
+        let loopOn = true
+
+        serialForRollUp.forEach((item,idx) => {
+            const r_name = `${hierarchy.split('#')[1]}_${item[0].split('#')[1]}_${val}`
+            if(idx==0){
+                selectedRows.push(`?o <${item[0]}> ?${r_name} . `)
+                if(level.sub==item[0]){
+                    loopOn = false
+                }
+                else{ 
+                    selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}>. `)
+                }
+            }
+            else if(loopOn==true){
+                selectedRows.push(`?${lastRName} <${item[1]}> ?${r_name} .`)
+                selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}> . `)
+            }
+            if(level.sub==item[0]) loopOn = false
+            lastRName = r_name
+        });
+
+        // selectedRows.push(`?o <${level.sub}> ${r_name} . `)
+        // console.log(selectedRows)
 
         if(Object.keys(levelProperty).length !== 0) {
             selectedRows.push(`${r_name} <${levelProperty.sub}> ${r_name}_${levelProperty.name} . `)
-            selectedRows.push(`${r_name} qb4o:memberOf <${level.sub}> . `)
+            selectedRows.push(`${r_name} qb4o:memberOf <${level.sub}>.`)
         }
 
         if(Object.keys(propertyToBeViewed).length !== 0) {
@@ -130,7 +154,7 @@ const appendLevelsFilter = (levels) => {
             hash.set(propertyToBeViewed.name, val + 1)
         }
     }) 
-
+    // selectedRows = [...new Set(selectedRows)]
     return selectedRows.join('\n\t')
 }
 

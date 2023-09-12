@@ -161,12 +161,14 @@ const Home = () => {
                 levelProperty: {},
                 selectedInstances:[],
             },
+            hierarchy: dialogData.hierarchy,
             levelProperty:{},
             propertyToBeViewed:{},
-            selectedInstances:[]
+            selectedInstances:[],
+            serialForRollUp: dialogData.serialForRollUp
         }
 
-        
+        console.log(temp_level)
         
         const isLevelAlreadyExists = levelPropData.some(item => {
             return item.level.name === temp_level.level.name &&
@@ -182,7 +184,6 @@ const Home = () => {
         
     }, [dialogData])
     
-    // console.log(dialogData)
 
     return (
         <Box disableGutters sx={{height: '100%'}}>

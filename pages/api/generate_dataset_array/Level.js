@@ -1,5 +1,5 @@
 module.exports = class Level {
-    constructor(sub,pred,obj){
+    constructor(sub,pred,obj,hierarchy){
         this.sub = sub
         this.pred = pred;
         this.obj = obj;
@@ -7,6 +7,8 @@ module.exports = class Level {
         this.prefix = ''
         this.levelAttributes = []
         this.resultSet = []
+        this.hierarchy = hierarchy
+        this.serialForRollUp = []
     }
 
     extractName() {
@@ -16,5 +18,6 @@ module.exports = class Level {
     }
 
     setLevelAttributes(levelAttributesArray) { this.levelAttributes = levelAttributesArray }
+    setSerialForRollUp (serial){this.serialForRollUp = serial}
 }
   

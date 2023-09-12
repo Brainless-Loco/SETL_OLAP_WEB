@@ -1,7 +1,9 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
+import CloseIcon from '@mui/icons-material/Close';
 
-const ALevelRow = ({data}) => {
+
+const ALevelRow = ({data,handleRemoveSelectedLevel}) => {
     const styleForfullContainer = {
         backgroundColor:'#F0F7EF', 
         display:'flex',
@@ -18,10 +20,12 @@ const ALevelRow = ({data}) => {
         marginBottom:'10px'
     }
     const subContainer1 = {
-        width:'85%',
+        width:'100%',
         padding:'5px',
         fontWeight:'bold',
-        height:'auto'
+        height:'auto',
+        display:'flex',
+        alignItems:'center',
 
     }
     const crossButton = {
@@ -55,13 +59,14 @@ const ALevelRow = ({data}) => {
     }
 
 
-
-
     return (
         <Box style={styleForfullContainer}>
-            <Typography style={subContainer1}>
-                Level: {data.level.name}
-            </Typography>
+            <Box style={subContainer1}>
+                <Typography>Level: {data.level.name}</Typography>
+                <Button onClick={()=>{handleRemoveSelectedLevel(data)}} sx={{marginLeft:'auto'}}>
+                    <CloseIcon sx={{marginLeft:'auto',fontSize:'22px',margin:'auto'}}/>
+                </Button>
+            </Box>
             
             <Box style={functionList}>
                 <Typography sx={{fontWeight:'bold'}}>Property: {data.levelProperty.name}</Typography>

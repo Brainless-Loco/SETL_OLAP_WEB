@@ -3,7 +3,7 @@ import { Card, CardHeader, Grid, CardContent, List } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import ALevelRow from './ALevelRow'
 
-const LevelSelectionSummaryFragment = ({data}) => {
+const   LevelSelectionSummaryFragment = ({data,handleRemoveSelectedLevel}) => {
 
     return (
         <Box sx={{
@@ -27,7 +27,7 @@ const LevelSelectionSummaryFragment = ({data}) => {
                     <Grid item sx={{width: '100%'}}>
                         <List>
                             {data.map((item, idx) => (
-                                <ALevelRow data={item} key={`levelProp_${idx}`}/>
+                                <ALevelRow handleRemoveSelectedLevel={handleRemoveSelectedLevel} data={item} key={`levelProp_${idx}`}/>
                             ))}
                         </List>
                     </Grid>

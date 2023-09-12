@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import DialogContentText from '@mui/material/DialogContentText';
 import { DataGrid } from '@mui/x-data-grid';
 
 export default function LevelViewport({ data, aboxIRI, onDone}) {
@@ -96,7 +95,20 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             temp.push(item)
         });
         setSelectedInstances(temp)
+
+        const {name, obj, sub, pred, prefix,hierarchy,serialForRollUp} = data
+        const dataPack = {
+            level: {name, obj, sub, pred, prefix},
+            hierarchy: hierarchy,
+            levelProperty: findCurrentLevelPropObj(selectedLevelProp),
+            propertyToBeViewed: findCurrentLevelPropObj(toBeViewedProperty),
+            filterCondition: toSymbol(selectedFilterCondition),
+            serialForRollUp: serialForRollUp,
+            selectedInstances:temp
+        }
+        onDone(dataPack)
     }
+    
 
     const toSymbol = (filterCond) => {
         var regex = /\(([^)]+)\)/
@@ -116,26 +128,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             serialForRollUp: serialForRollUp,
             selectedInstances
         }
-
-
-        // filterCondition : "=",
-        //     level : {
-        //         name: dialogData.name, 
-        //         obj: dialogData.obj, 
-        //         sub: dialogData.sub, 
-        //         pred: null, 
-        //         prefix: dialogData.prefix,
-        //     },
-        //     hierarchy: dialogData.hierarchy,
-        //     levelProperty:{},
-        //     propertyToBeViewed:{},
-        //     selectedInstances:[],
-        //     serialForRollUp: dialogData.serialForRollUp
-
-        // console.log("Level Modal > Done >", dataPack)
-        // console.log(dataPack)
         onDone(dataPack)
-        // onClose()
     }
 
 
@@ -249,10 +242,10 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                     
                         
                 </Box>
-                <Button onClick={handleDone}
+                {/* <Button onClick={handleDone}
                     disabled={!selectedInstances.length}>
                     Done
-                </Button>
+                </Button> */}
 
               
             </CardContent>

@@ -10,7 +10,7 @@ import LevelSelectionSummaryFragment from './LevelSelectionItem/LevelSelectionSu
 
 import main from '../../SparqlQueryGeneration/SparqlQueryGeneration'
 
-const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, setQueryView, setqueryResultView, removeSelectedAggFunc,aboxIRI}) => {
+const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, setQueryView, setqueryResultView, removeSelectedAggFunc,aboxIRI,handleRemoveSelectedLevel}) => {
     const validateData = () => {
         return measures.length && levels.length;
     }
@@ -51,7 +51,7 @@ const SelectionDockingWindow = ({measures, levels, dataset, setsparqlQueryData, 
                 data={measures} 
                 onRemove={removeSelectedAggFunc}/>
 
-                <LevelSelectionSummaryFragment data={levels}/>
+                <LevelSelectionSummaryFragment handleRemoveSelectedLevel={handleRemoveSelectedLevel} data={levels}/>
             </CardContent>
 
             <CardActions sx={{justifyContent: 'space-evenly'}}>

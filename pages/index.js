@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import Grid from "@mui/material/Grid"
 import Viewport from "../components/Windows/Viewport/Viewport"
@@ -35,6 +35,7 @@ const Home = () => {
         })
         if(!ifToExclude) temp.push(item)
         setSelectedLevels(temp)
+        console.log(temp)
     }
 
     const extractDatasetArray = async (abox, tbox) => {
@@ -149,6 +150,15 @@ const Home = () => {
     const [queryResultView, setqueryResultView] = useState(false)
     
     
+
+    
+    const handleRemoveSelectedLevel = (data)=>{
+        // console.log(data)
+        const filteredArray = levelPropData.filter((obj) => obj.level !== data.level);
+        setLevelPropData(filteredArray)
+    }
+
+
     // console.log(aboxIRI)
 
     useEffect(() => {
@@ -170,7 +180,7 @@ const Home = () => {
             serialForRollUp: dialogData.serialForRollUp
         }
 
-        console.log(temp_level)
+        // console.log(temp_level)
         
         const isLevelAlreadyExists = levelPropData.some(item => {
             return item.level.name === temp_level.level.name &&
@@ -234,7 +244,7 @@ const Home = () => {
                     setsparqlQueryData={setsparqlQueryData}
                     setQueryView={setQueryView}
                     setqueryResultView={setqueryResultView}
-
+                    handleRemoveSelectedLevel={handleRemoveSelectedLevel}
                     />
                 </Grid>
                 

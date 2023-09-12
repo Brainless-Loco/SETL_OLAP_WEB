@@ -36,7 +36,7 @@ module.exports = class LevelFactory {
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        +  `SELECT DISTINCT ?parent ?child <${this.source}>`
+        + `SELECT DISTINCT ?parent ?child <${this.source}>`
         +"WHERE {"
         + "?step a qb4o:HierarchyStep. \n"
         + "?step qb4o:inHierarchy <" + hierarchy.sub + ">. \n"
@@ -53,6 +53,7 @@ module.exports = class LevelFactory {
 
         if(this.isCuboid){
             bindings.forEach((item, idx) => {
+                console.log(item['o'].value)
                 this.levelArray.push(new Level(item['o'].value, null, null))
                 this.levelArray[idx].extractName()
             })

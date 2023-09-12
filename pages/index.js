@@ -35,7 +35,7 @@ const Home = () => {
         })
         if(!ifToExclude) temp.push(item)
         setSelectedLevels(temp)
-        console.log(temp)
+        // console.log(temp)
     }
 
     const extractDatasetArray = async (abox, tbox) => {

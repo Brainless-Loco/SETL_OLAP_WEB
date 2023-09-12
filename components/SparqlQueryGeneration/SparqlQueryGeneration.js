@@ -156,7 +156,7 @@ const appendLevelsFilter = (levels) => {
         }
     }) 
     selectedRows = [...new Set(selectedRows)]
-    console.log(selectedRows)
+    // console.log(selectedRows)
     return selectedRows.join('\n\t')
 }
 

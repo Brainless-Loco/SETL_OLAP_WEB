@@ -18,9 +18,7 @@ const handler = async (req, res) => {
     })
     
     res.status(200).json(
-        graphNames.filter(item => {
-            return item.includes('localhost')
-        })
+        graphNames
     )
 }
 

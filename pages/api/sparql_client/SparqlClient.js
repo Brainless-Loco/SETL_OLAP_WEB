@@ -4,7 +4,7 @@ const { default: getIPV4 } = require("./LocalIP")
 module.exports = class SparqlClient {
     constructor(endpoint, user, password) {
         this.user = user ?? 'dba'
-        
+
         // this.password = password ?? 'dba'
         // this.endpoint = endpoint ?? `http://${getIPV4()}:8890/sparql`
         
@@ -31,6 +31,7 @@ module.exports = class SparqlClient {
             },
         };
         const response = await handler.post("", params, config);
+        // console.log(response)
         return response;
     }
 }

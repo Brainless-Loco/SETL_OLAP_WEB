@@ -19,6 +19,7 @@ const main = async (aboxIRI, tboxIRI) => {
 
     // Extract cube, level, heirarchy etc
     const datasetList = dsFact.getDatasetArray()
+    // console.log(datasetList)
     for(let i = 0 ; i < datasetList.length ; i++) {
         await extractCube(tboxIRI, datasetList[i])
     }

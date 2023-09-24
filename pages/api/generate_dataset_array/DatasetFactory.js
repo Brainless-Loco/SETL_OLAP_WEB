@@ -13,6 +13,7 @@ module.exports = class DatasetFactory {
 
     extractDataset() {
         const tempDataset = new Dataset()
+        let alreadyTaken = new Map()
         const bindings = this.resultSet.results.bindings
 
         // console.log("Dataset Binding", bindings);
@@ -24,13 +25,21 @@ module.exports = class DatasetFactory {
             // const structureId = hash.get('x').value
             // this.getObservation(dataset, mEngine) 
 
-            if(idx & 1) tempDataset.setSchemaIri(hash['o'].value)
-            else tempDataset.setIri(hash['s'].value)
-            
-            if(idx & 1) {
+            if(!alreadyTaken.has(hash['s'].value)) {
+                const tempDataset = new Dataset()
+                console.log(hash['s'].value)
+                tempDataset.setSchemaIri(hash['o'].value)
+                tempDataset.setIri(hash['s'].value)
+                alreadyTaken.set(hash['s'].value,5555)
                 tempDataset.extractName(tempDataset.iri)
+                
                 this.datasetArr.push(tempDataset)
             }
+            
+            // if(idx & 1) {
+            //     tempDataset.extractName(tempDataset.iri)
+            //     this.datasetArr.push(tempDataset)
+            // }
             
 
             // Make an array of Dataset class instance

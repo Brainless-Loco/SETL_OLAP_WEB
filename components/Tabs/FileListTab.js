@@ -73,7 +73,7 @@ const FileListTab = ({value, index, onExtractDataset}) => {
             
             <Button className="extractBtn" fullWidth variant='contained' onClick={() => onExtractDataset(abox, tbox)} type="button" 
             disabled={!tbox.length || !abox.length} >
-                Extract Cubes
+                Extract Datasets
             </Button>
         </Box>
     )

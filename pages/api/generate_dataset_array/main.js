@@ -62,7 +62,8 @@ const extractCube = async (tbox, dataset) => {
         await dimFact.extractOlapDimension(null)
         dimFact.extractDimension()
         cube.setDimensionList(dimFact.getDimensionArray())
-        //console.log(dimFact.getDimensionArray())
+        console.log(dimFact.getDimensionArray())
+
 
         // Extract Hierarchies from each dimension, extract hierarchy level
         const dimensions = dimFact.getDimensionArray()

@@ -27,7 +27,7 @@ module.exports = class DatasetFactory {
 
             if(!alreadyTaken.has(hash['s'].value)) {
                 const tempDataset = new Dataset()
-                console.log(hash['s'].value)
+                // console.log(hash['s'].value)
                 tempDataset.setSchemaIri(hash['o'].value)
                 tempDataset.setIri(hash['s'].value)
                 alreadyTaken.set(hash['s'].value,5555)

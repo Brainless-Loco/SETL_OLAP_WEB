@@ -48,6 +48,9 @@ module.exports = class DimensionFactory {
         const obj = "http://purl.org/qb4olap/cubes#dimension"
         
         const bindings = this.resultSet.results.bindings
+
+        console.log(bindings)
+
         bindings.forEach(item => {
             let sub = item['dim'].value
             tempset.add(sub)
@@ -64,11 +67,20 @@ module.exports = class DimensionFactory {
         let tempset = []
         const obj = "http://purl.org/qb4olap/cubes#dimension"
 
+
+        let alreadyTaken = new Map()
+
         const bindings = this.resultSet.results.bindings
+
+        console.log(bindings)
+
         bindings.forEach(item => {
             let sub = item['o'].value
-            let tempDimension = new Dimension(sub,'a',obj)
-            tempset.push(tempDimension)
+            if(!alreadyTaken.has(sub)){
+                let tempDimension = new Dimension(sub,'a',obj)
+                tempset.push(tempDimension)
+                alreadyTaken.set(sub,4444);
+            }
 
         })
         this.resultSet = tempset
@@ -86,6 +98,10 @@ module.exports = class DimensionFactory {
         const client = new SparqlClient()
         const result = await client.query(sparql)
         this.resultSet = result.data
+        
+
+        console.log(result.data)
+
         return result.data
     }
     

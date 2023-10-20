@@ -30,6 +30,8 @@ module.exports = class CubeFactory {
         this.isCuboid = false      // If it is a cuboid, then extract the levels
         const bindings = this.resultSet.results.bindings
 
+        // console.log(bindings)
+
         bindings.forEach(item => {
 
             const sub = item['cube'].value

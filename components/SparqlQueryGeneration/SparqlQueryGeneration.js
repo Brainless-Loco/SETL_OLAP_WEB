@@ -33,19 +33,6 @@ const main = async (data) => {
     return {sparql, selectedColumns: [...selectedCols, ...selectedMeasures]}
 }
 
-const checkIfWithInstance = (levels)=>{
-    // selectedInstances
-
-    let to_be_return = false;
-
-    levels.forEach(item => {
-        if(item.selectedInstances.length>0){
-            // console.log('paisi')
-            to_be_return = true;
-        }
-    })
-    return to_be_return;
-}
 
 const appendLevelsQuery = (levels) => {
     const hash = new Map()
@@ -63,6 +50,8 @@ const appendLevelsQuery = (levels) => {
         hash.set(level.name, hash.get(level.name) + 1)
     })
 
+    // console.log(selectedCols.join('\n\t'))
+
     return {selectedCols, query: selectedCols.join('\n\t')}
 }
 
@@ -76,7 +65,6 @@ const appendMeasuresQuery = async (measures) => {
         const funs = measures[idx].functions
         const range = m.range
         
-        
         funs.forEach(func => {
             // Code
             const f_query = `(${func.name.toUpperCase()}(<${range}>(?m${count})) as ?${m.name}_${func.name})`
@@ -84,6 +72,7 @@ const appendMeasuresQuery = async (measures) => {
             selectedMeasures.push(` ?${m.name}_${func.name}`)
         })
     }
+    // console.log(selectedCols.join('\n\t'))
 
     return {selectedMeasures, measureQuery: selectedCols.join('\n\t')}
 }
@@ -96,6 +85,7 @@ const appendMeasuresFilter = (measures) => {
         const m = measures[idx].measure
         selectedRows.push(`?o <${m.sub}> ?m${count} . `)
     }
+    // console.log(selectedRows.join('\n\t'))
     return selectedRows.join('\n\t')
 }
 
@@ -107,11 +97,6 @@ const appendLevelsFilter = (levels) => {
     levels.forEach(item => {
         const {level, levelProperty, propertyToBeViewed,hierarchy,serialForRollUp} = item
 
-        // console.log(level.sub)
-        // console.log(hierarchy)
-
-        // const {levelProperty} = level
-
         if(!hash.get(level.name)) hash.set(level.name, 0)
         const val = hash.get(level.name)
         hash.set(level.name, val + 1)
@@ -120,24 +105,24 @@ const appendLevelsFilter = (levels) => {
 
         let loopOn = true
 
-        serialForRollUp.forEach((item,idx) => {
-            const r_name = `${hierarchy.split('#')[1]}_${item[0].split('#')[1]}`
+        serialForRollUp.forEach((itm,idx) => {
+            const r_name = `${hierarchy.split('#')[1]}_${itm[0].split('#')[1]}`
             if(idx==0){
-                selectedRows.push(`?o <${item[0]}> ?${r_name} . `)
-                if(level.sub==item[0]){
+                selectedRows.push(`?o <${itm[0]}> ?${r_name} . `)
+                if(level.sub==itm[0]){
                     loopOn = false
                 }
                 else{ 
-                    selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}>. `)
+                    selectedRows.push(`?${r_name} qb4o:memberOf <${itm[0]}>. `)
                 }
                 lastRName = r_name
             }
             else if(loopOn==true){
-                selectedRows.push(`?${lastRName} <${item[1]}> ?${r_name} .`)
-                selectedRows.push(`?${r_name} qb4o:memberOf <${item[0]}> . `)
+                selectedRows.push(`?${lastRName} <${itm[1]}> ?${r_name} .`)
+                selectedRows.push(`?${r_name} qb4o:memberOf <${itm[0]}> . `)
                 lastRName = r_name
             }
-            if(level.sub==item[0]) loopOn = false
+            if(level.sub==itm[0]) loopOn = false
         });
 
         // selectedRows.push(`?o <${level.sub}> ${r_name} . `)
@@ -146,6 +131,7 @@ const appendLevelsFilter = (levels) => {
         if(Object.keys(levelProperty).length !== 0) {
             selectedRows.push(`?${lastRName} <${levelProperty.sub}> ?${lastRName}_${levelProperty.name} . `)
             // selectedRows.push(`?${lastRName} qb4o:memberOf <${level.sub}>.`)
+            // console.log(`?${lastRName} <${levelProperty.sub}> ?${lastRName}_${levelProperty.name} . `)
         }
 
         if(Object.keys(propertyToBeViewed).length !== 0) {
@@ -158,6 +144,20 @@ const appendLevelsFilter = (levels) => {
     selectedRows = [...new Set(selectedRows)]
     // console.log(selectedRows)
     return selectedRows.join('\n\t')
+}
+
+const checkIfWithInstance = (levels)=>{
+    // selectedInstances
+
+    let to_be_return = false;
+
+    levels.forEach(item => {
+        if(item.selectedInstances.length>0){
+            // console.log('paisi')
+            to_be_return = true;
+        }
+    })
+    return to_be_return;
 }
 
 const appendInstanceFilter = (levels) => {

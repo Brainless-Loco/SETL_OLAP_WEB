@@ -5,8 +5,8 @@ const QueryEngine = require('@comunica/query-sparql').QueryEngine
 
 module.exports = class DatasetFactory {
 
-    constructor(source, datasetArr) {
-        this.source = source ?? `http://${getIPV4()}:8890/POPTBOX`
+    constructor(tboxIRI, datasetArr) {
+        this.tboxIRI = tboxIRI ?? `http://${getIPV4()}:8890/POPTBOX`
         this.datasetArr = datasetArr ?? []
         this.resultSet = []
     }
@@ -62,7 +62,7 @@ module.exports = class DatasetFactory {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        + `SELECT * FROM <${this.source}> WHERE { ?s a qb:DataSet; ?p ?o.\r\n`
+        + `SELECT * FROM <${this.tboxIRI}> WHERE { ?s a qb:DataSet; ?p ?o.\r\n`
         + "?s qb:structure ?x.\r\n}"
 
         const client = new SparqlClient()
@@ -75,9 +75,9 @@ module.exports = class DatasetFactory {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        + `SELECT (count(?o) AS ?numobs) FROM ${this.source} WHERE { ?o a qb:Observation.}`
+        + `SELECT (count(?o) AS ?numobs) FROM ${this.tboxIRI} WHERE { ?o a qb:Observation.}`
 
-        const resStream = await mEngine.queryBindings(sparql, {source: this.source})
+        const resStream = await mEngine.queryBindings(sparql, {source: this.tboxIRI})
         resStream.on('data', hash => {
             ///console.log("Getting observations", hash.toString())
             const ob =hash.get('numobs').value

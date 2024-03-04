@@ -15,12 +15,29 @@ const Home = () => {
     const [aboxFileRef, setABoxFileRef] = useState(null)
     
     const [datasetArray, setDatasetArray] = useState(null)
+    const [dimensionTree, setdimensionTree] = useState({})
     const [loading, setLoading] = useState(false)
     const [prefixes, setPrefixes] = useState(new Map())
 
-    // const [selectedMeasure,setSelectedMeasure] = useState([])
     const [selectedAggFunc, setSelectedAggFunc] = useState([])
     const [selectedLevels, setSelectedLevels] = useState([])
+
+    const [selectedMeasures, setSelectedMeasures] = useState([])
+
+    const [selectedDataset, setSelectedDataset] = useState({})
+
+    const [queryData, setQueryData] = useState({})
+
+    const [levelPropData, setLevelPropData] = useState([])
+    
+    const [aboxIRI, setABoxIRI] = useState('')
+    const [tboxIRI, setTBoxIRI] = useState('')
+    
+    const [dialogData, setDialogData] = useState({name: 'demo level'})
+    
+    const [sparqlQueryData, setsparqlQueryData] = useState(null)
+    const [QueryView, setQueryView] = useState(false)
+    const [queryResultView, setqueryResultView] = useState(false)
 
     const handleSetSelectedAggFunc = (item)=>{
         let temp = selectedAggFunc
@@ -38,30 +55,59 @@ const Home = () => {
         // console.log(temp)
     }
 
-    const extractDatasetArray = async (abox, tbox) => {
+    const extractDatasets = async (abox, tbox) => {
 
         // console.log('Request > Extract dataset from ' + tbox);
 
         // Query and get the datasets
+        setSelectedDataset({})
+        setdimensionTree({})
+        setDatasetArray(null)
+        setTBoxIRI(tbox)
+        setABoxIRI(abox)
         setLoading(true)
 
         const params = new URLSearchParams()
         params.append('tboxIRI', tbox)
         params.append('aboxIRI', abox)
-        const req = await fetch(`/api/generate_dataset_array?${params.toString()}`)
+        // const req = await fetch(`/api/generate_dataset_array?${params.toString()}`)
+        const req = await fetch(`/api/extract_datasets?${params.toString()}`)
         const data = await req.json()
+        
         if(req.ok) {
             setLoading(false)
             setDatasetArray(data)
         }
-        
-        // TODO: Extract prefixes from the dataset(s)
-        
-
         // console.log('Done Fetching data');
     }
+    
 
-    const [selectedMeasures, setSelectedMeasures] = useState([])
+    const extractCubes = async () => {
+
+        // console.log('Request > Extract Cube from ' + tbox);
+
+        // Query and extract the cubes
+
+        setLoading(true)
+
+        const params = new URLSearchParams()
+        params.append('tboxIRI', tboxIRI)
+        params.append('aboxIRI', aboxIRI)
+        params.append('datasetIRI', selectedDataset.iri)
+        params.append('datasetSchemaIri', selectedDataset.schemaIri)
+
+        const req = await fetch(`/api/generate_dataset_array?${params.toString()}`)
+        const data = await req.json()
+        
+        if(req.ok) {
+            setLoading(false)
+            setdimensionTree(data[0])
+            // setDatasetArray(data)
+        }
+        
+        console.log(data[0])
+        // console.log('Done Fetching data');
+    }
 
     const onMeasureAggrFuncSelect = (measure, function_name) => {
         // Code
@@ -97,7 +143,6 @@ const Home = () => {
         setSelectedMeasures(temp)
     }
 
-    const [levelPropData, setLevelPropData] = useState([])
     const handleLevelPropSelect = (data) => {
 
         let temp = [...levelPropData]
@@ -134,36 +179,15 @@ const Home = () => {
         setLevelPropData(temp)
     }
 
-    const [selectedDataset, setSelectedDataset] = useState({})
-
-    const [queryData, setQueryData] = useState({})
-
-    
-    
-    
-    const [aboxIRI, setABoxIRI] = useState('')
-    
-    const [dialogData, setDialogData] = useState({name: 'demo level'})
-    
-    const [sparqlQueryData, setsparqlQueryData] = useState(null)
-    const [QueryView, setQueryView] = useState(false)
-    const [queryResultView, setqueryResultView] = useState(false)
-    
-    
 
     
     const handleRemoveSelectedLevel = (data)=>{
-        // console.log(data)
         const filteredArray = levelPropData.filter((obj) => obj.level !== data.level);
         setLevelPropData(filteredArray)
     }
 
 
-    // console.log(aboxIRI)
-
     useEffect(() => {
-        // console.log(levelPropData)
-
         const temp_level = {
             filterCondition : "=",
             level : {
@@ -193,7 +217,7 @@ const Home = () => {
             setLevelPropData([...levelPropData,temp_level])
         }
         
-    }, [dialogData])
+    }, [dialogData])    
     
 
     return (
@@ -210,8 +234,12 @@ const Home = () => {
                 <Grid item md={4}>
                     <Viewport tabIdx={tabIdx} 
                         queryData={queryData}
-                        onSelectDataset={dataset => setSelectedDataset(dataset)}
-                        onExtract={extractDatasetArray}  setTabIdx={setTabIdx} 
+                        onSelectDataset={dataset =>{ 
+                            setSelectedDataset(dataset);
+                        }}
+                        onExtractDatasets={extractDatasets}  
+                        onExtractCubes={extractCubes}
+                        setTabIdx={setTabIdx} 
                         fileRef={fileRef}  datasetArray={datasetArray}
                         prefixMap={prefixes} 
                         onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
@@ -223,6 +251,7 @@ const Home = () => {
                         dialogData={dialogData}
                         setABoxIRI={setABoxIRI}
                         aboxIRI={aboxIRI}
+                        dimensionTree={dimensionTree}
                         />
                 </Grid>
                 <Grid item md={4}>

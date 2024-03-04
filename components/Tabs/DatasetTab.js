@@ -2,10 +2,12 @@ import Box from "@mui/material/Box"
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from "react"
 import FileNameList from "../Windows/ListViewComponents/FileNameListItem"
-import { CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
+import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import MeasuresList from "../Windows/ListViewComponents/MeasureList/MeasuresList"
+
+
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -13,9 +15,12 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
+
 const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect, 
-    onMeasureAggrFuncSelect, addAggFunc,
-    setDialogData
+    onExtractCubes,
+    onMeasureAggrFuncSelect, addAggFunc, 
+    setDialogData,
+    dimensionTree
 
     }) => {
     // JSON file after running the spqrql queries
@@ -36,11 +41,6 @@ const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect,
         // console.log("Level Select", levelRef)
     }
 
-    // const [selections,setSelections] = useState([])
-    // const [prefixes,setPrefixes] = useState(new Map())
-
-    // console.log(onLevelPropSelect)
-
 
     const extractListItems = () => {
         if(!Boolean(datasetArray)) return;
@@ -50,20 +50,32 @@ const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect,
         const cubes = []
         const dimens = []
         Object.values(datasetArray).forEach(ds => {
-            datasets.push({name: ds.name, iri: ds.iri})
+            datasets.push({name: ds.name, iri: ds.iri, schemaIri:ds.schemaIri })
             cubes.push({name: ds.cube.name})
-            ds.cube.dimensionList.forEach(dim => {
-                dimens.push(dim)
-            })
-            setMeasures(ds.cube.measureArray)
         })
+        
 
         setDataSets(datasets)
         setCubes(cubes)
-        setDims(dimens)
         
         //console.log("TreeView extraction", {datasetArray, datasets, cubes, dimens})
     }
+
+    useEffect(()=>{
+        const extractDimensionTree = ()=>{
+            const dimens = []
+            if(Object.keys(dimensionTree).length>0){
+                dimensionTree.cube.dimensionList.map((dim)=>{
+                    dimens.push(dim)
+                })
+                
+                setDims(dimens)
+                setMeasures(dimensionTree.cube.measureArray)
+            }
+        }
+        extractDimensionTree()
+    },[dimensionTree])
+
 
     useEffect(() => {
         //fetchFile()
@@ -94,22 +106,31 @@ const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect,
                 <FormControl fullWidth>
                     <InputLabel id='dataset-label' sx={{fontSize:'90%',verticalAlign:'middle',top:'-10%'}}>Datasets</InputLabel>
                     <Select
-                    labelId="dataset-select"
-                    sx={{width:'100%',height:'40px'}}
-                    label='Dataset'
-                    value={selectedDataset}
-                    onChange={handleDatasetChange}>
+                        labelId="dataset-select"
+                        sx={{width:'100%',height:'40px',marginBottom:'10px'}}
+                        label='Dataset'
+                        value={selectedDataset}
+                        onChange={handleDatasetChange}>
+
                         {datasets.map((item, idx) => (
                             <MenuItem key={`dataset_${idx}`} value={item.name}>dataset:{item.name}</MenuItem>
                         ))}
+
                     </Select>
+                    <Button className="extractBtn" fullWidth variant='contained' 
+                    onClick={()=>{onExtractCubes()}} type="button" 
+                    disabled={!selectedDataset} >
+                        Extract Cubes
+                    </Button>
                 </FormControl>
-                
+                {/* Ekhanei Tree Generate Hobe */}
+
+
                 <Box sx={{marginTop:'15px'}} hidden={!Boolean(selectedDataset)}>
                     <FileNameList listName='Dimensions' list={dims} onItemClick={onLevelSelect} mdProperty/>
                     <MeasuresList list={measures} onMeasureAggrFuncSelect={onMeasureAggrFuncSelect} addAggFunc={addAggFunc}/>
                 </Box>
-                {/* <LevelDialog open={open} handleClose={onDialogCancel} data={dialogData} aboxIRI={aboxIRI} onDone={onLevelPropSelect}/> */}
+
             </Box>
             {/* {
                 loading&& <Box sx={{height:'100px',width:'100%',display:'flex',justifyContent:'center',alignItems:'center'}}>

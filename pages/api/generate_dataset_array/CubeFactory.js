@@ -34,20 +34,20 @@ module.exports = class CubeFactory {
 
         bindings.forEach(item => {
 
-            const sub = item['cube'].value
-            const pred = item['pred'].value
-            const obj = item['obj'].value
+            const sub = item['obj'].value
+            // const pred = item['pred'].value
+            // const obj = item['obj'].value
 
             this.cube.setSubject(sub)
-            this.cube.setPredicate(pred)
-            this.cube.setObject(obj)
+            // this.cube.setPredicate(pred)
+            // this.cube.setObject(obj)
             this.cube.name = sub;
 
-            if(pred.includes('isCuboidOf')) {
-                this.isCuboid = true
-                // console.log('Cuboid found')
-                return
-            }
+            // if(pred.includes('isCuboidOf')) {
+            //     this.isCuboid = true
+            //     // console.log('Cuboid found')
+            //     return
+            // }
         })
 
         return this.isCuboid
@@ -60,8 +60,10 @@ module.exports = class CubeFactory {
         + `SELECT * FROM <${this.source}> WHERE { <${this.dataset.iri}> a qb:DataSet.\n`
         + `<${this.dataset.iri}> qb:structure ?cube.\n`
         + "?cube a qb:DataStructureDefinition.\n"
-        + "?cube ?pred ?obj.\n"
+        + "?cube qb4o:isCuboidOf ?obj.\n"
         + "}"
+
+        // console.log(sparql)
 
         const client = new SparqlClient()
         const result = await client.query(sparql)

@@ -36,14 +36,17 @@ module.exports = class LevelFactory {
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        + `SELECT DISTINCT ?parent ?child ?rollup <${this.source}>`
-        +"WHERE {"
+        + `SELECT DISTINCT ?parent ?child ?rollup\r\n`
+        + `FROM <${this.source}>\r\n`
+        + "WHERE {"
         + "?step a qb4o:HierarchyStep. \n"
         + "?step qb4o:inHierarchy <" + hierarchy.sub + ">. \n"
         + "?step qb4o:parentLevel ?parent. \n"
         + "?step qb4o:childLevel ?child. \n"
         + "?step qb4o:rollup ?rollup."
         + "}";  
+        
+        // console.log(sparql)
 
         await this.executeQuery(sparql)
     }

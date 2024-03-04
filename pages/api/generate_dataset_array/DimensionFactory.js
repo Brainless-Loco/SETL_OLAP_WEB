@@ -7,8 +7,9 @@ const Level = require('./Level')
 const QueryEngine = require('@comunica/query-sparql').QueryEngine
 
 module.exports = class DimensionFactory {
-    constructor(source, cube, level) {
+    constructor(source, dataset, cube, level) {
         this.source = source ?? `http://${getIPV4}:8890/POPTBOX`
+        this.dataset = dataset
         this.cube = cube ?? new Cube()
         this.resultSet = []
         this.dimension = new Dimension()
@@ -49,7 +50,7 @@ module.exports = class DimensionFactory {
         
         const bindings = this.resultSet.results.bindings
 
-        console.log(bindings)
+        // console.log(bindings)
 
         bindings.forEach(item => {
             let sub = item['dim'].value
@@ -72,10 +73,10 @@ module.exports = class DimensionFactory {
 
         const bindings = this.resultSet.results.bindings
 
-        console.log(bindings)
+        // console.log(bindings)
 
         bindings.forEach(item => {
-            let sub = item['o'].value
+            let sub = item['dimension'].value
             if(!alreadyTaken.has(sub)){
                 let tempDimension = new Dimension(sub,'a',obj)
                 tempset.push(tempDimension)
@@ -90,17 +91,35 @@ module.exports = class DimensionFactory {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
 				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
 				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ `SELECT DISTINCT ?o FROM <${this.source}> WHERE { <${this.cube.sub}> a qb:DataStructureDefinition.\n`
+				+ `SELECT DISTINCT ?o `
+                + `FROM <${this.source}> `
+                + `WHERE { <${this.cube.sub}> a qb:DataStructureDefinition.\n`
 				+ "<" + this.cube.sub + "> qb:component ?s.\n"
 				+ "?s qb4o:dimension ?o.\n"
 				+ "}"
 
+        const sparql2 = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+                + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
+                + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
+                + "SELECT distinct ?dimension\n"
+                + "from <"+ this.source + ">\n"
+                + "WHERE {\n"
+                + "<"+ this.dataset.iri+"> qb:structure ?cuboid.\n"
+                + "?cuboid qb4o:isCuboidOf ?cube.\n"
+                + "?cuboid qb:component ?component.\n"
+                + "?component qb4o:level ?level .\n"
+                + "?hierarchy qb4o:hasLevel ?level.\n"
+                + "?hierarchy qb4o:inDimension ?dimension .\n"
+                + "}"
+
+        // console.log(sparql2)
+
         const client = new SparqlClient()
-        const result = await client.query(sparql)
+        const result = await client.query(sparql2)
         this.resultSet = result.data
         
 
-        console.log(result.data)
+        // console.log(result.data)
 
         return result.data
     }

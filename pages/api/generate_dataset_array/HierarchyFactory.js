@@ -15,7 +15,8 @@ module.exports = class HeirarchyFactory {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
             + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
             + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-            + `SELECT ?x FROM <${this.source}>` + "WHERE { <" + this.dimension.sub + "> a qb:DimensionProperty."
+            + `SELECT ?x FROM <${this.source}>` 
+            + "WHERE { <" + this.dimension.sub + "> a qb:DimensionProperty."
             + "<" + this.dimension.sub + "> qb4o:hasHierarchy ?x.}"
 
         const client = new SparqlClient()

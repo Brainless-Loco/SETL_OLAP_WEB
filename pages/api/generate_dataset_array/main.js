@@ -4,27 +4,36 @@ import MeasureFactory from './MeasureFactory'
 const Cube = require('./Cube')
 const CubeFactory = require('./CubeFactory')
 const DatasetFactory = require('./DatasetFactory')
+const Dataset = require('./Dataset')
 const DimensionFactory = require('./DimensionFactory')
 const HeirarchyFactory = require('./HierarchyFactory')
 const LevelFactory = require('./LevelFactory')
-const fs = require('fs')
 
-const main = async (aboxIRI, tboxIRI) => {
-    const dsFact = new DatasetFactory(tboxIRI, null)
-    await dsFact.extractEndpointDataset(null)
-    dsFact.extractDataset()
+const main = async (aboxIRI, tboxIRI, datasetIRI,datasetSchemaIri) => {
+    // const dsFact = new DatasetFactory(tboxIRI, null)
+    // await dsFact.extractEndpointDataset(null)
+    // dsFact.extractDataset()
     
-    // To be able to use the dataset array here
-    //console.log(dsFact.getDatasetArray())
+    // // To be able to use the dataset array here
+    // //console.log(dsFact.getDatasetArray())
 
-    // Extract cube, level, heirarchy etc
+    // // Extract cube, level, heirarchy etc
+    // const datasetList = dsFact.getDatasetArray()
+    // // console.log(datasetList)
+    // for(let i = 0 ; i < datasetList.length ; i++) {
+    //     await extractCube(tboxIRI, datasetList[i])
+    // }
+
+    const dataset = new Dataset(datasetIRI,datasetSchemaIri)
+    const dsFact = new DatasetFactory(tboxIRI, [dataset])
     const datasetList = dsFact.getDatasetArray()
-    // console.log(datasetList)
+    
     for(let i = 0 ; i < datasetList.length ; i++) {
         await extractCube(tboxIRI, datasetList[i])
     }
 
     return datasetList;
+    // return [];
 }
 
 const extractCube = async (tbox, dataset) => {
@@ -37,7 +46,6 @@ const extractCube = async (tbox, dataset) => {
     //console.log(cuFact.cube)
     let cube = cuFact.getCube()
     
-
     if(isCuboid) {
         // console.log('Over here, cuboid in action')
         // Set up dimensions
@@ -56,13 +64,13 @@ const extractCube = async (tbox, dataset) => {
 
         // Extract and set levels to proper dimension
         await extractCuboidLevel(tbox, cube)
-    } else {
+    } 
+    else {
         // Extract dimension from cube
-        const dimFact = new DimensionFactory(tbox, cube, null)
+        const dimFact = new DimensionFactory(tbox, dataset, cube, null)
         await dimFact.extractOlapDimension(null)
         dimFact.extractDimension()
         cube.setDimensionList(dimFact.getDimensionArray())
-        console.log(dimFact.getDimensionArray())
 
 
         // Extract Hierarchies from each dimension, extract hierarchy level
@@ -72,6 +80,7 @@ const extractCube = async (tbox, dataset) => {
             await extractHierarchyList(tbox, dimensions[i])
             await extractHierarchyStepLevel(tbox, dimensions[i].getHierarchyList())
         }
+        // console.log(dimFact.getDimensionArray())
     }
     
     cube.extractName()
@@ -106,8 +115,6 @@ const extractHierarchyStepLevelList = async (tbox, hierarchy) => {
     for(let i = 0 ; i < levels.length ; i++){
         await extractLevelAttributes(tbox, levels[i])
     }
-
-    // console.log(levels)
 
     hierarchy.setHierarchyStep(levels)
 }

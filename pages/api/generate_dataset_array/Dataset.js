@@ -4,7 +4,7 @@ module.exports = class Dataset {
     
     constructor(iri, schemaIri){
       this.iri = iri
-      this.schemaIri = schemaIri
+      this.schemaIri = schemaIri ?? ''
       this.name = ''
       this.prefix = ''
       this.cube = new Cube()

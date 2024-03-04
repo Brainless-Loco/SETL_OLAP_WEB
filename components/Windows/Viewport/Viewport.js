@@ -21,7 +21,8 @@ import QueryViewTab from "../../Tabs/QueryViewTab"
 import QueryResultsTab from "../../Tabs/QueryResultsTab"
 
 
-const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtract, 
+const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtractDatasets, 
+    onExtractCubes,
     setTBoxFileRef,
     setABoxFileRef, datasetArray, 
     prefixMap, onMeasureAggrFuncSelect,
@@ -29,13 +30,14 @@ const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtract,
     dialogData,
     setDialogData,
     aboxIRI,
-    setABoxIRI
+    setABoxIRI,
+    dimensionTree
 
     }) => {
 
     const onExtractDataset = (abox, tbox) => {
         setABoxIRI(abox)
-        onExtract(abox, tbox)
+        onExtractDatasets(abox, tbox)
     }
 
     const flexSetting = {
@@ -58,17 +60,19 @@ const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtract,
                     <Box sx={{ height: 'auto', overflowY: 'auto',width:'100%'}}>
                         <FileListTab
                             onExtractDataset={onExtractDataset} 
-                            setTBoxFileRef={setTBoxFileRef} 
+                            setTBoxFileRef={setTBoxFileRef}
                             setABoxFileRef={setABoxFileRef}/>
                     </Box>
                     <DatasetTab
                             onSelectDataset={onSelectDataset}
                             aboxIRI={aboxIRI}
                             datasetArray={datasetArray}
+                            onExtractCubes={onExtractCubes}
                             onLevelPropSelect={onLevelPropSelect}
                             onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
                             addAggFunc={addAggFunc}
                             dialogData = {dialogData}
+                            dimensionTree={dimensionTree}
                             setDialogData={setDialogData}
                             />
                     

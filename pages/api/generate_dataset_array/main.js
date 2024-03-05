@@ -10,19 +10,6 @@ const HeirarchyFactory = require('./HierarchyFactory')
 const LevelFactory = require('./LevelFactory')
 
 const main = async (aboxIRI, tboxIRI, datasetIRI,datasetSchemaIri) => {
-    // const dsFact = new DatasetFactory(tboxIRI, null)
-    // await dsFact.extractEndpointDataset(null)
-    // dsFact.extractDataset()
-    
-    // // To be able to use the dataset array here
-    // //console.log(dsFact.getDatasetArray())
-
-    // // Extract cube, level, heirarchy etc
-    // const datasetList = dsFact.getDatasetArray()
-    // // console.log(datasetList)
-    // for(let i = 0 ; i < datasetList.length ; i++) {
-    //     await extractCube(tboxIRI, datasetList[i])
-    // }
 
     const dataset = new Dataset(datasetIRI,datasetSchemaIri)
     const dsFact = new DatasetFactory(tboxIRI, [dataset])
@@ -33,7 +20,6 @@ const main = async (aboxIRI, tboxIRI, datasetIRI,datasetSchemaIri) => {
     }
 
     return datasetList;
-    // return [];
 }
 
 const extractCube = async (tbox, dataset) => {
@@ -77,14 +63,14 @@ const extractCube = async (tbox, dataset) => {
         const dimensions = dimFact.getDimensionArray()
         for(let i = 0 ; i < dimensions.length ; i++) {
             dimensions[i].extractName();
-            await extractHierarchyList(tbox, dimensions[i])
+            await extractHierarchyList(tbox,dataset, dimensions[i])
             await extractHierarchyStepLevel(tbox, dimensions[i].getHierarchyList())
         }
         // console.log(dimFact.getDimensionArray())
     }
     
     cube.extractName()
-    await extractMeasures(tbox, cube)
+    await extractMeasures(tbox, cube, dataset)
     dataset.setCube(cube)
 }
 
@@ -126,16 +112,15 @@ const extractLevelAttributes = async (tbox, level) => {
     level.setLevelAttributes(laFact.getLevelAttributesArray())
 }
 
-const extractHierarchyList = async (tbox, dimension) => {
-    const hierFact = new HeirarchyFactory(tbox, dimension)
+const extractHierarchyList = async (tbox, dataset, dimension) => {
+    const hierFact = new HeirarchyFactory(tbox,dataset, dimension)
     await hierFact.fetchDimensionHierarchyList()
     hierFact.extractHierarchies()
     dimension.setHierarchyList(hierFact.getHierarchyList())
-    //console.log(dimension)
 }
 
-const extractMeasures = async (tbox, cube) => {
-    const measureFact = new MeasureFactory(tbox, cube)
+const extractMeasures = async (tbox, cube, dataset) => {
+    const measureFact = new MeasureFactory(tbox, cube, dataset)
     await measureFact.fetchMeasureArray()
     await measureFact.extractMeasures()
     cube.setMeasureArray(measureFact.measureArray)

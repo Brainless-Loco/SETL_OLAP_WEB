@@ -66,13 +66,10 @@ const appendMeasuresQuery = async (measures) => {
         const range = m.range
         
         funs.forEach(func => {
-            // Code
             const f_query = `(${func.name.toUpperCase()}(<${range}>(?m${count})) as ?${m.name}_${func.name})`
             selectedCols.push(f_query)
-            selectedMeasures.push(` ?${m.name}_${func.name}`)
         })
     }
-    // console.log(selectedCols.join('\n\t'))
 
     return {selectedMeasures, measureQuery: selectedCols.join('\n\t')}
 }

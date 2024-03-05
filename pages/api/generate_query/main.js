@@ -55,7 +55,7 @@ const appendMeasuresQuery = async (measures) => {
             // Code
             const f_query = `(${func.name.toUpperCase()}(<${range}>(?m${count})) as ?${m.name}_${func.name})`
             selectedCols.push(f_query)
-            selectedMeasures.push(`?${m.name}_${func.name}`)
+            // selectedMeasures.push(`?${m.name}_${func.name}`)
         })
     }
 

@@ -6,8 +6,9 @@ const Level = require("./Level")
 const Measure = require("./Measure")
 
 module.exports = class MeasureFactory {
-    constructor(source, cube) {
+    constructor(source, cube, dataset) {
         this.source = source ?? `http://${getIPV4}:8890/POPTBOX`
+        this.dataset = dataset
         this.resultSet = []
         this.measureArray = []
         this.cube = cube

@@ -88,17 +88,8 @@ module.exports = class DimensionFactory {
     }
 
     async getDefaultResultSet() {
-        const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
-				+ "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
-				+ "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-				+ `SELECT DISTINCT ?o `
-                + `FROM <${this.source}> `
-                + `WHERE { <${this.cube.sub}> a qb:DataStructureDefinition.\n`
-				+ "<" + this.cube.sub + "> qb:component ?s.\n"
-				+ "?s qb4o:dimension ?o.\n"
-				+ "}"
 
-        const sparql2 = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
+        const sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\r\n"
                 + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\r\n"
                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n"
                 + "SELECT distinct ?dimension\n"
@@ -112,10 +103,8 @@ module.exports = class DimensionFactory {
                 + "?hierarchy qb4o:inDimension ?dimension .\n"
                 + "}"
 
-        // console.log(sparql2)
-
         const client = new SparqlClient()
-        const result = await client.query(sparql2)
+        const result = await client.query(sparql)
         this.resultSet = result.data
         
 

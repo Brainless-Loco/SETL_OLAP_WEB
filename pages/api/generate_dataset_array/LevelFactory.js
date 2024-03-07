@@ -3,26 +3,40 @@ const SparqlClient = require("../sparql_client/SparqlClient")
 const Level = require("./Level")
 
 module.exports = class LevelFactory {
-    constructor(source) {
+    constructor(source, dataset) {
         this.source = source ?? "http://localhost:8890/POPTBOX"
+        this.dataset = dataset
         this.resultSet = []
         this.levelArray = []
         this.isCuboid = false
+        this.cuboidLevels = []
     }
 
     
-    async fetchCuboidLevel(cuboid) {
-        this.isCuboid = true
-        // console.log(cuboid)
+    async fetchCuboidLevels(dataset) {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
-        + `SELECT DISTINCT ?o FROM <${this.source}> WHERE { <${cuboid.sub}> a qb:DataStructureDefinition.\n`
-        + `<${cuboid.sub}> qb:component ?s.\n`
+        + `SELECT DISTINCT ?o FROM <${this.source}> WHERE {\n`
+        + ` <${dataset.iri}> a qb:DataSet;\n`
+        + `qb:structure ?cuboid.\n`
+        + `?cuboid qb4o:isCuboidOf ?cube.\n`
+        + `?cuboid ?component ?s.\n`
         + "?s qb4o:level ?o.\n"
         + "}"
         
-        await this.executeQuery(sparql)
+        await this.executeQueryForCuboidLevels(sparql)
+    }
+    
+    async executeQueryForCuboidLevels (sparql){
+        const client = new SparqlClient()
+        const result = await client.query(sparql)
+        let tempResult = []
+        const bindings = result.data.results.bindings
+        bindings.forEach((item,idx)=>{
+            tempResult.push(item.o.value)
+        })
+        this.cuboidLevels = tempResult
     }
     
     async executeQuery(sparql) {
@@ -31,19 +45,19 @@ module.exports = class LevelFactory {
         this.resultSet = result.data
     }
 
-    async fetchHierarchyStepLevels(hierarchy) {
+    async fetchHierarchyStepLevels(hierarchy, dataset) {
         const sparql = "PREFIX qb:	<http://purl.org/linked-data/cube#>\r\n"
         + "PREFIX	owl:	<http://www.w3.org/2002/07/owl#>\r\n"
         + "PREFIX	rdfs:	<http://www.w3.org/2000/01/rdf-schema#>\r\n"
         + "PREFIX	qb4o:	<http://purl.org/qb4olap/cubes#>\r\n"
         + `SELECT DISTINCT ?parent ?child ?rollup\r\n`
         + `FROM <${this.source}>\r\n`
-        + "WHERE {"
+        + "WHERE {\n"
         + "?step a qb4o:HierarchyStep. \n"
         + "?step qb4o:inHierarchy <" + hierarchy.sub + ">. \n"
         + "?step qb4o:parentLevel ?parent. \n"
         + "?step qb4o:childLevel ?child. \n"
-        + "?step qb4o:rollup ?rollup."
+        + "?step qb4o:rollup ?rollup.\n"
         + "}";  
         
         // console.log(sparql)
@@ -83,9 +97,20 @@ module.exports = class LevelFactory {
                 }
             })
             goOn = true
+            let serialOn = true;
             while(goOn==true){
                 this.levelArray.push(new Level(withoutParentLevel, null, null,hierarchy))
-                serial.push([withoutParentLevel, rollUp.get(withoutParentLevel)])
+                if(serialOn) {
+                    serial.push([withoutParentLevel, rollUp.get(withoutParentLevel)])
+                    this.levelArray[this.levelArray.length-1].disabled = false
+                }
+                else{
+                    this.levelArray[this.levelArray.length-1].disabled = true
+                }
+                if(this.checkIfCuboidLevel(this.levelArray[this.levelArray.length-1].sub)){
+                    serialOn = false;
+                }
+                
                 this.levelArray[this.levelArray.length-1].extractName()
                 if(child.has(withoutParentLevel)==true){
                     withoutParentLevel = child.get(withoutParentLevel)
@@ -96,13 +121,24 @@ module.exports = class LevelFactory {
             }
         }
         serial = serial.reverse()
+        // console.log(this.levelArray)
+        // console.log(serial)
         this.levelArray.forEach((item)=>{
             item.setSerialForRollUp(serial)
         })
     }
     
+    checkIfCuboidLevel = (sub)=>{
+        if(this.cuboidLevels.includes(sub)) return true;
+        return false;
+    }
+
     getLevelArray() {
         return this.levelArray
+    }
+
+    getCuboidLevels(){
+        return this.cuboidLevels
     }
 
     setCubeName(cubeName) { this.cubeName = cubeName }

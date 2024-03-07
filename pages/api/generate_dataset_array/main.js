@@ -49,7 +49,7 @@ const extractCube = async (tbox, dataset) => {
         }
 
         // Extract and set levels to proper dimension
-        await extractCuboidLevel(tbox, cube)
+        // await extractCuboidLevels(tbox, cube)
     } 
     else {
         // Extract dimension from cube
@@ -64,7 +64,7 @@ const extractCube = async (tbox, dataset) => {
         for(let i = 0 ; i < dimensions.length ; i++) {
             dimensions[i].extractName();
             await extractHierarchyList(tbox,dataset, dimensions[i])
-            await extractHierarchyStepLevel(tbox, dimensions[i].getHierarchyList())
+            await extractHierarchyStepLevel(tbox, dataset, dimensions[i].getHierarchyList())
         }
         // console.log(dimFact.getDimensionArray())
     }
@@ -74,27 +74,25 @@ const extractCube = async (tbox, dataset) => {
     dataset.setCube(cube)
 }
 
-const extractCuboidLevel = async (tbox, cuboid) => {
+const extractCuboidLevels = async (tbox, dataset) => {
     const lvlFact = new LevelFactory(tbox)
-    await lvlFact.fetchCuboidLevel(cuboid)
-    lvlFact.extractData()
-
-    const levels = lvlFact.getLevelArray()
+    await lvlFact.fetchCuboidLevels(dataset)
+    // lvlFact.extractData()
 
     //console.log(lvlFact.getLevelArray())
 }
 
-const extractHierarchyStepLevel = async (tbox, hierarchyList) => {
+const extractHierarchyStepLevel = async (tbox, dataset, hierarchyList) => {
     for(let i = 0 ; i < hierarchyList.length ; i++) {
         hierarchyList[i].extractName()
-        // console.log(hierarchyList[i].sub)
-        await extractHierarchyStepLevelList(tbox, hierarchyList[i])
+        await extractHierarchyStepLevelList(tbox, dataset, hierarchyList[i])
     }
 }
 
-const extractHierarchyStepLevelList = async (tbox, hierarchy) => {
-    const lvlFact = new LevelFactory(tbox)
-    await lvlFact.fetchHierarchyStepLevels(hierarchy)
+const extractHierarchyStepLevelList = async (tbox, dataset, hierarchy) => {
+    const lvlFact = new LevelFactory(tbox, dataset)
+    lvlFact.fetchCuboidLevels(dataset)
+    await lvlFact.fetchHierarchyStepLevels(hierarchy, dataset)
     lvlFact.extractData(hierarchy.sub)
     const levels = lvlFact.getLevelArray();
 
@@ -102,10 +100,12 @@ const extractHierarchyStepLevelList = async (tbox, hierarchy) => {
         await extractLevelAttributes(tbox, levels[i])
     }
 
+    // console.log(levels)
+
     hierarchy.setHierarchyStep(levels)
 }
 
-const extractLevelAttributes = async (tbox, level) => {
+const extractLevelAttributes = async (tbox,  level) => {
     const laFact = new LevelAttributeFactory(tbox)
     await laFact.fetchLevelAttributes(level)
     laFact.extractData()

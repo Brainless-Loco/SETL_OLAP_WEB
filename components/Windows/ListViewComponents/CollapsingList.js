@@ -18,10 +18,7 @@ const CollapsingList = ({listItems, isOpen, onItemClick, mdProperty}) => {
                     if(obj.hierarchyStep) return (<FileNameList key={`mdStruct_${obj.name}_${idx}`} listName={`mdStructure:${obj.name}`} list={obj.hierarchyStep} onItemClick = {onItemClick}></FileNameList>)
                     return(
                         <ListItem sx={{height:'25px',marginBottom:'1px'}} key={`${obj.name}_${idx}`} title={obj.name}>
-                            <ListItemButton className='listItem_01' sx={{height:'25px'}} onClick={() => {onItemClick(obj)}}>
-                                {/* <ListItemIcon sx={{alignItems: 'center', justifyContent: 'space-around'}}>
-                                    <InsertDriveFileIcon/>
-                                </ListItemIcon> */}
+                            <ListItemButton disabled={obj.disabled} className='listItem_01' sx={{height:'25px'}} onClick={() => {onItemClick(obj)}}>
                                 <ListItemText 
                                     primary={`${mdProperty ? 'mdProperty:' : ''}${obj.name}`} 
                                     primaryTypographyProps={{ 

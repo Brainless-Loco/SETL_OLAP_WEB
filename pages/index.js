@@ -105,7 +105,7 @@ const Home = () => {
             // setDatasetArray(data)
         }
         
-        console.log(data[0])
+        // console.log(data[0])
         // console.log('Done Fetching data');
     }
 
@@ -217,7 +217,8 @@ const Home = () => {
             setLevelPropData([...levelPropData,temp_level])
         }
         
-    }, [dialogData])    
+    }, [dialogData])   
+    
     
 
     return (

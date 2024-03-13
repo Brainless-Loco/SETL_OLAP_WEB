@@ -58,7 +58,6 @@ const ALevelRow = ({data,handleRemoveSelectedLevel}) => {
         fontWeight:'bold'
     }
 
-
     return (
         <Box style={styleForfullContainer}>
             <Box style={subContainer1}>
@@ -70,6 +69,8 @@ const ALevelRow = ({data,handleRemoveSelectedLevel}) => {
             
             <Box style={functionList}>
                 <Typography sx={{fontWeight:'bold'}}>Property: {data.levelProperty.name}</Typography>
+                <Typography sx={{fontSize:'15px'}}>Property to be viewed: &nbsp;
+                {Object.keys(data.propertyToBeViewed).length>0? data.propertyToBeViewed.name: " "}</Typography>
                 <Box sx={{padding:'0px'}} style={aFunction}>
                     <ul>
                         {

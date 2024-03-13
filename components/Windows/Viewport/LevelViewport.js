@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
-import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -13,23 +12,17 @@ import { DataGrid } from '@mui/x-data-grid';
 
 export default function LevelViewport({ data, aboxIRI, onDone}) {
 
-    // console.log(aboxIRI)
 
   const [selectedLevelProp, setSelectedLevelProp] = useState('')
   const [selectedFilterCondition, setSelectedFilterCondition] = useState('Equal to (=)')
-  const [activeStep, setActiveStep] = useState(0)
   const [levelInstances, setLevelInstances] = useState([])
   const [loading, setLoading] = useState(false)
   const [selectedInstances, setSelectedInstances] = useState([])
   const [toBeViewedProperty, setToBeViewedProperty] = useState('')
   const [levelAttributes, setlevelAttributes] = useState([])
 
-//   console.log(data)
-
-
   const cols = [
         { field: 'id', headerName: 'No.', width: 64 },
-        // { field: 'name', headerName: 'Instance Name', width: 128 },
         { field: 'sub', headerName: 'Instance IRI', width: 256 },
         { field: 'obj', headerName: 'Instance of', width: 256 },
     ]
@@ -49,6 +42,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
 
     const handleToBeViewedPropertyChange = (event) => {
         setToBeViewedProperty(event.target.value)
+        changeSelectedInstances()
     }
 
     const findCurrentLevelPropObj = () => {
@@ -88,14 +82,9 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
         // console.log('Level Instances > Done said good bye')
     }
 
-    const changeSelectedInstances = (ids) => {
-        let temp = []
-        ids.forEach(id => {
-            const item = levelInstances[id]
-            temp.push(item)
-        });
-        setSelectedInstances(temp)
 
+    const changeSelectedInstances = () => {
+        
         const {name, obj, sub, pred, prefix,hierarchy,serialForRollUp} = data
         const dataPack = {
             level: {name, obj, sub, pred, prefix},
@@ -104,9 +93,19 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             propertyToBeViewed: findCurrentLevelPropObj(toBeViewedProperty),
             filterCondition: toSymbol(selectedFilterCondition),
             serialForRollUp: serialForRollUp,
-            selectedInstances:temp
+            selectedInstances: selectedInstances
         }
         onDone(dataPack)
+    }
+    const updateSelectedInstances = (ids)=>{
+        var temp = []
+        ids.forEach(id => {
+            const item = levelInstances[id]
+            temp.push(item)
+        });
+        setSelectedInstances(temp)
+
+        changeSelectedInstances()
     }
     
 
@@ -117,20 +116,14 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
         return arr[1]
     }
 
-    const handleDone = () => {
-        const {name, obj, sub, pred, prefix,hierarchy,serialForRollUp} = data
-        const dataPack = {
-            level: {name, obj, sub, pred, prefix},
-            hierarchy: hierarchy,
-            levelProperty: findCurrentLevelPropObj(selectedLevelProp),
-            propertyToBeViewed: findCurrentLevelPropObj(toBeViewedProperty),
-            filterCondition: toSymbol(selectedFilterCondition),
-            serialForRollUp: serialForRollUp,
-            selectedInstances
-        }
-        onDone(dataPack)
-    }
 
+    useEffect(() => {
+      if(toBeViewedProperty.length>0) {
+        changeSelectedInstances();
+        console.log("ahha")
+        }
+    }, [toBeViewedProperty])
+    
 
 
     useEffect(() => {
@@ -151,15 +144,13 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
 
 
     useEffect(() => {
-        if(selectedLevelProp.length>0 && toBeViewedProperty.length>0){
+        if(selectedLevelProp.length>0){
             fetchInstances()
         }else{
             // setLevelInstances([])
         }
-    }, [selectedLevelProp,toBeViewedProperty])
+    }, [selectedLevelProp])
 
-    
-    
 
 
   return (
@@ -228,7 +219,10 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
                             levelInstances.length>0?
                                 <DataGrid
                                     checkboxSelection
-                                    onSelectionModelChange={(ids)=>{changeSelectedInstances(ids)}}
+                                    onSelectionModelChange={(ids)=>{
+                                        updateSelectedInstances(ids);
+                                        // changeSelectedInstances(ids);
+                                    }}
                                     columns={cols}
                                     rows={levelInstances}
                                     pageSize={10}

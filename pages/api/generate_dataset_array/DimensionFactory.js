@@ -26,16 +26,16 @@ module.exports = class DimensionFactory {
 
     async extractDimensionFromLevel() {
         // Code
-        const sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>"
-        + "PREFIX dct: <http://purl.org/dc/terms/>"
-        + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>"
-        + `SELECT * FROM <${this.source}> WHERE {`
-        + "?step a qb4o:HierarchyStep."
-        + "?step qb4o:parentLevel ?parent."
-        + "?step qb4o:childLevel ?child."
-        + "?step qb4o:inHierarchy ?hierarchy."
-        + "?hierarchy a qb4o:Hierarchy."
-        + "?hierarchy qb4o:inDimension ?dim."
+        const sparql = "PREFIX qb: <http://purl.org/linked-data/cube#>\n"
+        + "PREFIX dct: <http://purl.org/dc/terms/>\n"
+        + "PREFIX qb4o: <http://purl.org/qb4olap/cubes#>\n"
+        + `SELECT * FROM <${this.source}> WHERE {\n`
+        + "?step a qb4o:HierarchyStep.\n"
+        + "?step qb4o:parentLevel ?parent.\n"
+        + "?step qb4o:childLevel ?child.\n"
+        + "?step qb4o:inHierarchy ?hierarchy.\n"
+        + "?hierarchy a qb4o:Hierarchy.\n"
+        + "?hierarchy qb4o:inDimension ?dim.\n"
         + "}"
 
         const client = new SparqlClient()

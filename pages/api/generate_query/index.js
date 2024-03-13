@@ -12,6 +12,7 @@ const handler = async (req, res) => {
         // Generate query here
         const query = await main(docSnap.data())
         // console.log("mydata"+docSnap.data())
+        console.log(query)
         res.status(200).json(query)
     } else {
         res.status(404).send(`Cannot find reference to document ${docID} .`)

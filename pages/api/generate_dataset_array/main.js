@@ -100,8 +100,6 @@ const extractHierarchyStepLevelList = async (tbox, dataset, hierarchy) => {
         await extractLevelAttributes(tbox, levels[i])
     }
 
-    // console.log(levels)
-
     hierarchy.setHierarchyStep(levels)
 }
 

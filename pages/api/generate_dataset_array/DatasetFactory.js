@@ -65,8 +65,12 @@ module.exports = class DatasetFactory {
         + `SELECT * FROM <${this.tboxIRI}> WHERE { ?s a qb:DataSet; ?p ?o.\r\n`
         + "?s qb:structure ?x.\r\n}"
 
+        console.log(sparql)
+
         const client = new SparqlClient()
         const result = await client.query(sparql)
+
+        
 
         return result.data
     }

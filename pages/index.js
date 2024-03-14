@@ -9,7 +9,6 @@ import QueryResultView from "../components/QueryResultView/QueryResultView"
 import QuerytViewModal from "../components/QueryViewModal/QueryViewModal"
 
 const Home = () => {
-    const [tabIdx, setTabIdx] = useState(0)
     const [fileRef, setFileRef] = useState(null)
     const [tboxFileRef, setTBoxFileRef] = useState(null)
     const [aboxFileRef, setABoxFileRef] = useState(null)
@@ -17,7 +16,6 @@ const Home = () => {
     const [datasetArray, setDatasetArray] = useState(null)
     const [dimensionTree, setdimensionTree] = useState({})
     const [loading, setLoading] = useState(false)
-    const [prefixes, setPrefixes] = useState(new Map())
 
     const [selectedAggFunc, setSelectedAggFunc] = useState([])
     const [selectedLevels, setSelectedLevels] = useState([])
@@ -57,9 +55,6 @@ const Home = () => {
 
     const extractDatasets = async (abox, tbox) => {
 
-        // console.log('Request > Extract dataset from ' + tbox);
-
-        // Query and get the datasets
         setSelectedDataset({})
         setdimensionTree({})
         setDatasetArray(null)
@@ -70,15 +65,16 @@ const Home = () => {
         const params = new URLSearchParams()
         params.append('tboxIRI', tbox)
         params.append('aboxIRI', abox)
-        // const req = await fetch(`/api/generate_dataset_array?${params.toString()}`)
         const req = await fetch(`/api/extract_datasets?${params.toString()}`)
-        const data = await req.json()
-        
-        if(req.ok) {
-            setLoading(false)
-            setDatasetArray(data)
+
+        if(req) {
+            const data = await req.json()
+            if(req.ok) {
+                setLoading(false)
+                setDatasetArray(data)
+            }
         }
-        // console.log('Done Fetching data');
+        
     }
     
 
@@ -233,16 +229,14 @@ const Home = () => {
             <Grid container rowSpacing={{xs: 2}} columnSpacing={0.5} columns={12}
             sx={{ paddingTop: '15px', paddingX:'8px',height: 'auto', overflowY: 'auto', overflowX: 'hidden',display:'flex',justifyContent:'space-around' }}>
                 <Grid item md={4}>
-                    <Viewport tabIdx={tabIdx} 
+                    <Viewport
                         queryData={queryData}
                         onSelectDataset={dataset =>{ 
                             setSelectedDataset(dataset);
                         }}
                         onExtractDatasets={extractDatasets}  
                         onExtractCubes={extractCubes}
-                        setTabIdx={setTabIdx} 
                         fileRef={fileRef}  datasetArray={datasetArray}
-                        prefixMap={prefixes} 
                         onMeasureAggrFuncSelect={onMeasureAggrFuncSelect}
                         setTBoxFileRef={setTBoxFileRef} setABoxFileRef={setABoxFileRef}
                         addAggFunc={handleSetSelectedAggFunc}

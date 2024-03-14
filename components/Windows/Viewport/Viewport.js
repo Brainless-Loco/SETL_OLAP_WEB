@@ -1,31 +1,15 @@
 import CardContent from "@mui/material/CardContent"
 import Card from '@mui/material/Card'
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CardHeader from '@mui/material/CardHeader'
-import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
-import Tabs from "@mui/material/Tabs"
-import Tab from "@mui/material/Tab"
-import { useState } from "react"
-import TreeViewport from "./TreeViewport"
-import JsonViewport from "./JsonViewport"
-import RdfViewport from "./RdfViewport"
-import SparqlEditorViewport from "./SparqlEditorViewport"
-import SparqlResultViewport from "./SparqlResultViewport"
-import { getBytes, getDownloadURL, getStorage, ref, firebase } from "firebase/storage"
-import SelectionSummaryTab from "../../Tabs/SelectionSummaryTab"
 import FileListTab from "../../Tabs/FileListTab"
 import DatasetTab from "../../Tabs/DatasetTab"
-import QueryViewTab from "../../Tabs/QueryViewTab"
-import QueryResultsTab from "../../Tabs/QueryResultsTab"
 
 
-const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtractDatasets, 
+const Viewport = ({onSelectDataset, onExtractDatasets, 
     onExtractCubes,
     setTBoxFileRef,
-    setABoxFileRef, datasetArray, 
-    prefixMap, onMeasureAggrFuncSelect,
+    setABoxFileRef, datasetArray, onMeasureAggrFuncSelect,
     onLevelPropSelect, addAggFunc,
     dialogData,
     setDialogData,
@@ -49,8 +33,6 @@ const Viewport = ({tabIdx, setTabIdx, onSelectDataset, onExtractDatasets,
         maxHeight:'100vh',
         overflowY:'auto'
     }
-
-    // console.log(aboxIRI)
 
     return (
         <Box >

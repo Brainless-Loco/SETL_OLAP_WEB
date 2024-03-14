@@ -1,10 +1,8 @@
 import Box from "@mui/material/Box"
 import Typography from '@mui/material/Typography'
-import { useEffect, useState,createContext } from "react"
+import { useEffect, useState } from "react"
 import FileNameList from "../ListViewComponents/FileNameListItem"
-import { getBytes, getDownloadURL, getStorage, ref,firebase } from "firebase/storage"
-import TreeView from "../../HomeComponents/TreeView"
-import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material"
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import MeasuresList from "../ListViewComponents/MeasureList/MeasuresList"
@@ -19,7 +17,6 @@ const Item = styled(Paper)(({ theme }) => ({
 const TreeViewport = ({datasetArray, prefixMap, onMeasureAggrFuncSelect}) => {
     // JSON file after running the spqrql queries
     // to generate the data set(s)
-    const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [datasets, setDataSets] = useState([])
     const [cubes, setCubes] = useState([])
@@ -27,48 +24,6 @@ const TreeViewport = ({datasetArray, prefixMap, onMeasureAggrFuncSelect}) => {
     const [dims, setDims] = useState([])
     const [selectedDataset, setSelectedDataset] = useState('')
 
-
-    const [selections,setSelections] = useState([])
-    const [prefixes,setPrefixes] = useState(new Map())
-
-    const fetchFile = async () => {
-        // Code
-        if(fileType !== 'ttl') {
-            setLoading(true)
-            return
-        }
-
-        setLoading(true)
-        const req = await fetch(`/api/generate_dataset_array?fileName=${fileName}`)
-        const data = await req.json()
-        if(req.ok) {
-            setLoading(false);
-            setData(data);
-            extractListItems(data)
-        }
-        
-        const storage = getStorage()
-        const storageRef = ref(storage, `rdfsource/${fileName}`)
-        getBytes(storageRef)
-        .then(snapshot => {
-            const decoder = new TextDecoder()
-            const view = new Int8Array(snapshot)
-            const decodedText = decoder.decode(view)
-            var allLines = decodedText.split('\n')
-            prefixes.clear()
-            allLines.forEach((item)=>{
-                const temp = item.trim().split(/\s+/)
-                if(temp[0]=="@prefix"){
-                    const short = temp[1].slice(0,-1)
-                    const broad = temp[2].slice(1,-1)
-                    if(broad.slice(-1)=='>') broad=broad.slice(0,-1)
-                    prefixes.set(short,broad)
-                    prefixes.set(broad,short)
-                }
-            })
-        })
-        
-    }
 
     const extractListItems = () => {
         if(!Boolean(datasetArray)) return;
@@ -98,17 +53,6 @@ const TreeViewport = ({datasetArray, prefixMap, onMeasureAggrFuncSelect}) => {
         //setSelections([])
         extractListItems()
     }, [datasetArray])
-
-    const addOnClick = (item)=>{
-        selections.push(item)
-        selections = [...new Set(selections)]
-        setSelections(selections)
-    }
-    const removeOnClick = (item)=>{
-        selections = selections.filter(val => val !== item)
-        selections = [...new Set(selections)]
-        setSelections(selections)
-    }
 
     const handleDatasetChange = (event) => {
         setSelectedDataset(event.target.value)

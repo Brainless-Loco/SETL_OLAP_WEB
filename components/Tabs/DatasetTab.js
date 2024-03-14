@@ -2,7 +2,11 @@ import Box from "@mui/material/Box"
 import Typography from '@mui/material/Typography'
 import { useEffect, useState } from "react"
 import FileNameList from "../Windows/ListViewComponents/FileNameListItem"
-import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
+import Button  from "@mui/material/Button"
+import FormControl from "@mui/material/FormControl"
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import MeasuresList from "../Windows/ListViewComponents/MeasureList/MeasuresList"
@@ -25,7 +29,6 @@ const DatasetTab = ({datasetArray, onSelectDataset, onLevelPropSelect,
     }) => {
     // JSON file after running the spqrql queries
     // to generate the data set(s)
-    const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [datasets, setDataSets] = useState([])
     const [cubes, setCubes] = useState([])

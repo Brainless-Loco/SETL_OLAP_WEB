@@ -1,5 +1,5 @@
 import { Box } from "@mui/system"
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import { useEffect, useState } from "react";
 const QueryViewTab = ({queryData, aboxIRI}) => {
     const [query, setQuery] = useState('')

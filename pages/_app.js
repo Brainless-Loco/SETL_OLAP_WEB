@@ -4,7 +4,6 @@ import '../styles/selectionSummary.css'
 import '../styles/collapsingList.css'
 import '../styles/viewport.css'
 import Layout from "../components/Layout/Layout"
-import firebaseApp from '../firebase/firebaseApp'
 
 const MyApp = ({Component, pageProps}) => {
     return (

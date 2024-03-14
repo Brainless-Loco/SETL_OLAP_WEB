@@ -1,4 +1,4 @@
-const { default: axios } = require("axios")
+import axios from "axios"
 const { default: getIPV4 } = require("./LocalIP")
 
 module.exports = class SparqlClient {
@@ -8,11 +8,11 @@ module.exports = class SparqlClient {
         // this.password = password ?? 'dba'
         // this.endpoint = endpoint ?? `http://${getIPV4()}:8890/sparql`
         
-        // this.password = password ?? 'rudra19701066'
-        // this.endpoint = endpoint ?? `http://bike-csecu.com:8890/sparql`
+        this.password = password ?? 'rudra19701066'
+        this.endpoint = endpoint ?? `http://bike-csecu.com:8890/sparql`
 
-        this.password = password ?? 'dba'
-        this.endpoint = endpoint ?? `http://bike-csecu.com:8893/sparql`
+        // this.password = password ?? 'dba'
+        // this.endpoint = endpoint ?? `http://bike-csecu.com:8893/sparql`
     }
 
     async query(sparql) {

@@ -1,14 +1,10 @@
 import Box from "@mui/material/Box"
-import Stack from '@mui/material/Stack'
-import Typography from '@mui/material/Typography'
 import FormControl from "@mui/material/FormControl"
 import Select from '@mui/material/Select'
 import InputLabel from '@mui/material/InputLabel'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
 import { useEffect, useState } from "react"
-import FileNameList from "../Windows/ListViewComponents/FileNameListItem"
-import { getStorage, ref, listAll } from "firebase/storage"
 
 const FileListTab = ({value, index, onExtractDataset}) => {
     const [graphs, setGraphs] = useState([])
@@ -25,13 +21,18 @@ const FileListTab = ({value, index, onExtractDataset}) => {
 
     const getGraphList = async () => {
         const res = await fetch('/api/get_graph_list')
-        const data = await res.json()
-        const temp = []
-        data.forEach(item => {
-            temp.push({name: item})
-        })
-
-        setGraphs(temp)
+        if(res){
+            const data = await res.json()
+            const temp = []
+            if(data){
+                data.forEach(item => {
+                    temp.push({name: item})
+                })
+        
+                setGraphs(temp)
+            }
+        }
+        
     }
 
     useEffect(() => {

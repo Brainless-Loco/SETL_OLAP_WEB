@@ -31,9 +31,9 @@ const MeasureSelectionSummaryFragment = ({data, onRemove}) => {
                 {
                     data.map((item, idx) => (
                         <Card sx={{backgroundColor:'transparent',boxShadow:'none'}} key={`measure_${item.measure.name}_${idx}`}>
-                            <CardHeader titleTypographyProps={{variant:'h6' }} title={`${item.measure.name}`}/>
-                            <CardContent>
-                                <Typography>Selected level(s): {item.functions.length}</Typography>
+                            <CardHeader sx={{marginBottom:'0px',padding:'0px 10px'}} titleTypographyProps={{variant:'h6', }} title={`${item.measure.name}`}/>
+                            <CardContent sx={{padding:'0px 10px'}}   >
+                                <Typography  >Selected level(s): {item.functions.length}</Typography>
                                 <AggrFunctionList data={item.functions} 
                                 onRemove={(func) => {
                                     onRemove(item.measure, func)

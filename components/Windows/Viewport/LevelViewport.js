@@ -160,7 +160,7 @@ export default function LevelViewport({ data, aboxIRI, onDone}) {
             width: '100%',
         }}>
             {/* Bad practice, use card header instead */}
-            <CardHeader sx={{color:'#08094f',paddingBottom:'0px',paddingTop:'5px'}} title='Level Selections'/>
+            <CardHeader sx={{color:'#08094f',paddingBottom:'0px',paddingTop:'5px'}} title='Instance Selections'/>
             
             {/* Seperate the components. */}
             <CardContent sx={{paddingTop:'5px'}}>
